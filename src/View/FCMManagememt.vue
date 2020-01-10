@@ -26,4 +26,3 @@ export default class FCMManagememt extends Vue {
   }
 }
 </script>
-

@@ -43,6 +43,26 @@ export default class Noticepage {
     });
   }
 
+  public updatedoc(): Promise<number> {
+    return new Promise(async (resolve, reject) => {
+      let response = await axios.post(
+        "/forutonamanagementbackend/v1/NoticePage/Updatedoc",
+        this
+      );
+      resolve(Number(response.data));
+    });
+  }
+
+  public deletedoc(): Promise<number> {
+    return new Promise(async (resolve, reject) => {
+      let response = await axios.post(
+        "/forutonamanagementbackend/v1/NoticePage/Deletedoc",
+        this
+      );
+      resolve(Number(response.data));
+    });
+  }
+
   public writeNoiceDoc(): Promise<number> {
     return new Promise(async (resolve, reject) => {
       let response = await axios.post(

@@ -6,7 +6,7 @@
           <v-row class="d-flex mb-4">
             <div class="headline">공지사항 등록</div>
             <v-spacer></v-spacer>
-            <v-dialog persistent v-model="registerflag" width="300">
+            <v-dialog persistent v-model="registerflag" width="300" v-if="idx==null">
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" v-on="on">등록하기</v-btn>
               </template>
@@ -24,6 +24,52 @@
                         @click="registerdoc"
                         color="primary"
                       >등록</v-btn>
+                    </v-row>
+                  </v-col>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+            <v-dialog persistent v-model="modifyflag" width="300" v-if="idx!=null">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary" v-on="on">수정</v-btn>
+              </template>
+              <v-card>
+                <v-card-text>
+                  <v-col>
+                    <v-row class="title mt-4 mb-4">
+                      <div>정말로 수정하시겠습니까?</div>
+                    </v-row>
+                    <v-row justify="end">
+                      <v-btn color="primary" @click="modifyflag=false">아니요</v-btn>
+                      <v-btn
+                        class="ml-4"
+                        :loading="modifyflagloading"
+                        @click="onmodify"
+                        color="primary"
+                      >수정</v-btn>
+                    </v-row>
+                  </v-col>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+            <v-dialog persistent v-model="deleteflag" width="300" v-if="idx!=null">
+              <template v-slot:activator="{ on }">
+                <v-btn class="ml-4" color="primary" v-on="on">삭제</v-btn>
+              </template>
+              <v-card>
+                <v-card-text>
+                  <v-col>
+                    <v-row class="title mt-4 mb-4">
+                      <div>정말로 삭제하시겠습니까?</div>
+                    </v-row>
+                    <v-row justify="end">
+                      <v-btn color="primary" @click="deleteflag=false">아니요</v-btn>
+                      <v-btn
+                        class="ml-4"
+                        :loading="deleteflagloading"
+                        @click="ondelete"
+                        color="primary"
+                      >삭제</v-btn>
                     </v-row>
                   </v-col>
                 </v-card-text>
@@ -54,6 +100,30 @@
             <v-row>등록하였습니다.</v-row>
             <v-row justify="end">
               <v-btn color="primary" @click="onregistercehck">확인</v-btn>
+            </v-row>
+          </v-col>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="modifycheckdialog" width="300">
+      <v-card>
+        <v-card-text>
+          <v-col>
+            <v-row>수정 되었습니다.</v-row>
+            <v-row justify="end">
+              <v-btn color="primary" @click="onmodifycheck">확인</v-btn>
+            </v-row>
+          </v-col>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="deletecheckdialog" width="300">
+      <v-card>
+        <v-card-text>
+          <v-col>
+            <v-row>삭제 되었습니다.</v-row>
+            <v-row justify="end">
+              <v-btn color="primary" @click="ondeletecheck">확인</v-btn>
             </v-row>
           </v-col>
         </v-card-text>
@@ -96,10 +166,18 @@ export default class NoticeDocPage extends Vue {
     placeholder: "여기에 내용을 입력 하세요."
   };
   registerdocloading = false;
+  modifyflag = false;
+  modifyflagloading = false;
   pageitem: Noticepage = new Noticepage();
 
   registerflag = false;
   registercheckdialog = false;
+
+  modifycheckdialog = false;
+
+  deleteflag = false;
+  deleteflagloading = false;
+  deletecheckdialog = false;
   created() {
     Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
     Quill.register("modules/imageResize", ImageResize);
@@ -136,6 +214,27 @@ export default class NoticeDocPage extends Vue {
   }
   onregistercehck() {
     this.registercheckdialog = false;
+    this.$router.push("/notice/main");
+  }
+  async onmodify() {
+    this.modifyflagloading = true;
+    await this.pageitem.updatedoc();
+    this.modifyflag = false;
+    this.modifyflagloading = false;
+    this.modifycheckdialog = true;
+  }
+  onmodifycheck() {
+    this.modifycheckdialog = false;
+    this.$router.push("/notice/main");
+  }
+  async ondelete() {
+    this.deleteflagloading = true;
+    await this.pageitem.deletedoc();
+    this.deleteflagloading = false;
+    this.deletecheckdialog = true;
+  }
+  ondeletecheck() {
+    this.deletecheckdialog = false;
     this.$router.push("/notice/main");
   }
 }

@@ -10,12 +10,12 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/notice">
+        <v-list-item to="/notice/main">
           <v-list-item-action>
             <v-icon>notifications</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>FCM</v-list-item-title>
+            <v-list-item-title>공지사항</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-group>
@@ -26,16 +26,12 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                메인
-              </div>
+              <div class="ml-5">메인</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                HotPick
-              </div>
+              <div class="ml-5">HotPick</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -47,16 +43,12 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                활동유저
-              </div>
+              <div class="ml-5">활동유저</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                탈퇴유저
-              </div>
+              <div class="ml-5">탈퇴유저</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -68,16 +60,12 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                퀘스트큐브
-              </div>
+              <div class="ml-5">퀘스트큐브</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                이슈큐브
-              </div>
+              <div class="ml-5">이슈큐브</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -89,30 +77,22 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                접수전
-              </div>
+              <div class="ml-5">접수전</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                접수 완료
-              </div>
+              <div class="ml-5">접수 완료</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                송금완료
-              </div>
+              <div class="ml-5">송금완료</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                송금 실패
-              </div>
+              <div class="ml-5">송금 실패</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -124,30 +104,22 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                접수전
-              </div>
+              <div class="ml-5">접수전</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                접수완료
-              </div>
+              <div class="ml-5">접수완료</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                송금완료
-              </div>
+              <div class="ml-5">송금완료</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                송금 실패
-              </div>
+              <div class="ml-5">송금 실패</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -173,23 +145,17 @@
           </template>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                서비스 이용약관
-              </div>
+              <div class="ml-5">서비스 이용약관</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                개인정보 처리 방침
-              </div>
+              <div class="ml-5">개인정보 처리 방침</div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item link>
             <v-list-item-title>
-              <div class="ml-5">
-                위치정보 처리 방침
-              </div>
+              <div class="ml-5">위치정보 처리 방침</div>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -199,9 +165,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Forutona</v-toolbar-title>
       <v-spacer></v-spacer>
-      <div v-if="isLogin == true" class="mr-4">
-        {{ Logininfo.nickname }} 님 환영 합니다.
-      </div>
+      <div v-if="isLogin == true" class="mr-4">{{ Logininfo.nickname }} 님 환영 합니다.</div>
       <v-btn v-if="isLogin == false" to="/Login" color="secondary">Login</v-btn>
       <v-btn v-else color="secondary" @click="Logout">Logout</v-btn>
     </v-app-bar>
@@ -210,7 +174,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer color="primary" app>
-      <span class="white--text">&copy; 2019</span>
+      <span class="white--text">&copy; 2020 Forutona</span>
     </v-footer>
   </v-app>
 </template>

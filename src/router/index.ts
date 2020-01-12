@@ -32,6 +32,33 @@ const routes = [
     path: "/Login",
     name: "login",
     component: () => import(/* webpackChunkName: "about" */ "@/views/Login.vue")
+  },
+  {
+    path: "/notice",
+    name: "noticepage",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "@/View/NoticePage/NoticePage.vue"
+      ),
+    children: [
+      {
+        path: "main",
+        name: "noticemain",
+        component: () => import("@/View/NoticePage/NoticeMain.vue")
+      },
+      {
+        path: "docpage",
+        name: "docpage",
+        component: () => import("@/View/NoticePage/NoticeDocPage.vue"),
+        props: true
+      },
+      {
+        path: "docpage/:idx",
+        name: "docpage",
+        component: () => import("@/View/NoticePage/NoticeDocPage.vue"),
+        props: true
+      }
+    ]
   }
 ];
 

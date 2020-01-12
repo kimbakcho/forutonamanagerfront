@@ -4,6 +4,7 @@ export default class Userinfo {
   uid!: string;
   nickname!: string;
   password!: string;
+  role!: string;
   accesstoken!: string;
 
   public static Login(uid: string, password: string): Promise<Userinfo> {

@@ -41,7 +41,7 @@
               <v-list-item-title>유저</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item link>
+          <v-list-item to="/userinfo/activeuser">
             <v-list-item-title>
               <div class="ml-5">활동유저</div>
             </v-list-item-title>

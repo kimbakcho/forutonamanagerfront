@@ -12,7 +12,7 @@
       </template>
       <template v-slot:item.writeDate="{ item }">{{item.writeDate.toFormat("yyyy-MM-dd HH:mm:ss")}}</template>
     </v-data-table>
-    <v-pagination v-model="options.page" :length="totalpagelength"></v-pagination>
+    <v-pagination @input="onchangepage" v-model="pagenationpage" :length="totalpagelength"></v-pagination>
   </div>
 </template>
 
@@ -68,6 +68,7 @@ export default class NoticePageTable extends Vue {
       width: 200
     }
   ];
+  pagenationpage = 1;
   options: DataOptions = {
     page: 1,
     itemsPerPage: 10,
@@ -97,6 +98,9 @@ export default class NoticePageTable extends Vue {
   }
   mounted() {
     this.init();
+  }
+  onchangepage(value: number) {
+    this.options.page = value;
   }
   async init() {}
 }

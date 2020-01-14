@@ -58,7 +58,7 @@
               <v-list-item-title>큐브</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item link>
+          <v-list-item to="/cube/questcube">
             <v-list-item-title>
               <div class="ml-5">퀘스트큐브</div>
             </v-list-item-title>

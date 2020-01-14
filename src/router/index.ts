@@ -71,6 +71,18 @@ const routes = [
         props: true
       }
     ]
+  },
+  {
+    path: "/cube",
+    name: "cubepage",
+    component: () => import("@/View/CubePage/CubePageMain.vue"),
+    children: [
+      {
+        path: "questcube",
+        name: "questcube",
+        component: () => import("@/View/CubePage/QuestCubePage.vue")
+      }
+    ]
   }
 ];
 

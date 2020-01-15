@@ -48,7 +48,7 @@ export default class Fcubequestpageview {
   ): Promise<Fcubequestpageview[]> {
     return new Promise(async (resolve, reject) => {
       let response = await axios.get(
-        "/forutonamanagementbackend/v1/Fcue/QuestCubePage/selectFcubeQuestPageView",
+        "/forutonamanagementbackend/v1/Fcube/QuestCubePage/selectFcubeQuestPageView",
         {
           params: searchdto
         }
@@ -66,6 +66,20 @@ export default class Fcubequestpageview {
         "/forutonamanagementbackend/v1/Fcube/QuestCubePage/selectFcubeQuestPageViewlength",
         {
           params: searchdto
+        }
+      );
+      resolve(Number(response.data));
+    });
+  }
+  public deletefcubeitem(): Promise<number> {
+    return new Promise(async (resolve, reject) => {
+      let response = await axios.post(
+        "/forutonamanagementbackend/v1/Fcube/deletefcube",
+        null,
+        {
+          params: {
+            cubeuuid: this.cubeuuid
+          }
         }
       );
       resolve(Number(response.data));

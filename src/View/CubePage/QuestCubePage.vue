@@ -26,12 +26,30 @@
               :items="itemperpagelist"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn>큐브 삭제</v-btn>
+            <v-dialog persistent v-model="deletecheckdialog" width="500">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary" v-on="on">큐브 삭제</v-btn>
+              </template>
+              <v-card>
+                <v-card-text>
+                  <v-col>
+                    <v-row class="headline">정말로 삭제 하시겠습니까?</v-row>
+                    <v-row justify="end">
+                      <v-btn color="primary" @click="deletecheckdialog=false">아니요</v-btn>
+                      <v-btn color="primary" class="ml-4" @click="ondeletecube">삭제</v-btn>
+                    </v-row>
+                  </v-col>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </v-row>
           <v-row>
             <v-col cols="12" class="ma-0 pa-0">
               <v-card>
                 <v-data-table
+                  v-model="selected"
+                  show-select
+                  item-key="cubeuuid"
                   :options.sync="options"
                   :items="items"
                   :loading="isloading"
@@ -53,6 +71,18 @@
         </v-col>
       </v-row>
     </v-col>
+    <v-dialog v-model="deletecheckdialog2" width="500">
+      <v-card>
+        <v-card-text>
+          <v-col>
+            <v-row class="headline">삭제하였습니다.</v-row>
+            <v-row justify="end">
+              <v-btn color="primary" @click="deletecheckdialog2 = false">확인</v-btn>
+            </v-row>
+          </v-col>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -166,16 +196,27 @@ export default class QuestCubePage extends Vue {
       sortable: true
     }
   ];
+  selected: Fcubequestpageview[] = [];
   isloading = false;
   searchitem = "cubeName";
   searchtext = "";
   totalpagelength = 0;
   pagenationpage = 1;
   items: Fcubequestpageview[] = [];
+  deletecheckdialog = false;
+  deletecheckdialog2 = false;
   mounted() {
     this.init();
   }
   async init() {}
+  async ondeletecube() {
+    for (let i = 0; i < this.selected.length; i++) {
+      await this.selected[i].deletefcubeitem();
+    }
+    this.onsearch(this.options);
+    this.deletecheckdialog = false;
+    this.deletecheckdialog2 = true;
+  }
   onsearchclick() {
     this.onsearch(this.options);
   }
@@ -205,7 +246,6 @@ export default class QuestCubePage extends Vue {
     this.items = await Fcubequestpageview.getFcubequestpageviews(
       fcubeUserSearchdto
     );
-
     this.isloading = false;
   }
 }

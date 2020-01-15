@@ -63,7 +63,7 @@
               <div class="ml-5">퀘스트큐브</div>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item link>
+          <v-list-item to="/cube/issuecube">
             <v-list-item-title>
               <div class="ml-5">이슈큐브</div>
             </v-list-item-title>

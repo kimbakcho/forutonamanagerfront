@@ -81,6 +81,11 @@ const routes = [
         path: "questcube",
         name: "questcube",
         component: () => import("@/View/CubePage/QuestCubePage.vue")
+      },
+      {
+        path: "issuecube",
+        name: "issuecube",
+        component: () => import("@/View/CubePage/IssuecubePage.vue")
       }
     ]
   }

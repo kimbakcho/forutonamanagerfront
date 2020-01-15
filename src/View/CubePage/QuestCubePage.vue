@@ -235,7 +235,8 @@ export default class QuestCubePage extends Vue {
       sortBy: value.sortBy[0],
       sortDesc: value.sortDesc[0],
       searchtype: this.searchitem,
-      searchtext: this.searchtext
+      searchtext: this.searchtext,
+      cubeType: "questCube"
     };
     this.options.page = value.page;
     let temptotalpagelength: number = await Fcubequestpageview.getFcubeQuestPageViewlength(

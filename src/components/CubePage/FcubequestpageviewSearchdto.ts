@@ -5,4 +5,5 @@ export default class FcubequestpageviewSearchdto {
   sortDesc!: boolean;
   searchtype!: string;
   searchtext!: string;
+  cubeType!: string;
 }

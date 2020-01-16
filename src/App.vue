@@ -130,13 +130,14 @@
             </v-list-item-content>
           </template>
         </v-list-group>
-        <v-list-group>
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>FAQ</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </v-list-group>
+        <v-list-item to="/FAQ">
+          <v-list-item-action>
+            <v-icon>live_help</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>FAQ</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-group>
           <template v-slot:activator>
             <v-list-item-content>

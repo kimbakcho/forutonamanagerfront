@@ -88,6 +88,11 @@ const routes = [
         component: () => import("@/View/CubePage/IssuecubePage.vue")
       }
     ]
+  },
+  {
+    path: "/FAQ",
+    name: "FAQ",
+    component: () => import("@/View/FAQPage/FAQPageMain.vue")
   }
 ];
 

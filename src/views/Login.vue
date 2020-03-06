@@ -41,12 +41,8 @@ export default class Login extends Vue {
     info.password = this.Password;
     try {
       let loginresult = await GlobalSatete.onLogin(info);
-      if (
-        loginresult != null &&
-        loginresult.accesstoken != undefined &&
-        loginresult.accesstoken != "undefined"
-      ) {
-        this.$router.push("/");
+      if (loginresult != null) {
+        this.$router.back();
       } else {
         this.faildialog = true;
       }
@@ -63,8 +59,9 @@ export default class Login extends Vue {
   }
 
   async RefreshTokenFunc() {
-    if (GlobalSatete.Logininfo != null) {
-      await GlobalSatete.onReFreshToken();
+    let refresh_token = localStorage.getItem("refresh_token");
+    if (refresh_token != "undefined" && refresh_token != null) {
+      await GlobalSatete.onReFreshToken(refresh_token);
     }
   }
 

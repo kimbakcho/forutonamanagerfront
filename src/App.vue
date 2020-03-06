@@ -193,17 +193,12 @@ export default class App extends Vue {
     this.cinit();
   }
   async cinit() {
-    let accesstoken = localStorage.getItem("accesstoken");
-    if (accesstoken != "undefined" && accesstoken != null) {
-      let decodebase64 = accesstoken.split(".")[1];
-      let decode = atob(decodebase64);
-      let parsecode = JSON.parse(decode);
-      let info = new Userinfo();
-      info.uid = parsecode.uid;
-      info.nickname = parsecode.nickname;
-      info.accesstoken = accesstoken;
-      GlobalSatete.Login(info);
-      await GlobalSatete.onReFreshToken();
+    let refresh_token = localStorage.getItem("refresh_token");
+    if (refresh_token != "undefined" && refresh_token != null) {
+      let userinfo = await GlobalSatete.onReFreshToken(refresh_token);
+      if (userinfo == null) {
+        return;
+      }
       if (GlobalSatete.RefreshTokenTimer === null) {
         GlobalSatete.setRefreshTokenTimer(
           setInterval(this.RefreshTokenFunc, 1800000)
@@ -220,8 +215,9 @@ export default class App extends Vue {
   }
 
   async RefreshTokenFunc() {
-    if (GlobalSatete.Logininfo != null) {
-      await GlobalSatete.onReFreshToken();
+    let refresh_token = localStorage.getItem("refresh_token");
+    if (refresh_token != "undefined" && refresh_token != null) {
+      await GlobalSatete.onReFreshToken(refresh_token);
     }
   }
 

@@ -1,10 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { IGlobalState } from "./modules/globalstate";
+import GlobalState from "@/store/modules/globalstate";
 
 Vue.use(Vuex);
-export interface IRootState {
-  globalstate: IGlobalState;
-}
-
-export default new Vuex.Store<IRootState>({});
+export default new Vuex.Store({});

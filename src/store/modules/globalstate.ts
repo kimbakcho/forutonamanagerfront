@@ -12,19 +12,12 @@ import store from "@/store";
 import Userinfo from "@/components/Userinfo";
 import axios from "axios";
 
-export interface IGlobalState {
-  app_toolbar_search_text: String;
-  Logininfo: Userinfo | null;
-  RefreshTokenTimer: number | null;
-}
-
 @Module({
   store,
   name: "GlobalSatete",
-  namespaced: true,
   dynamic: true
 })
-class GlobalSatete extends VuexModule implements IGlobalState {
+class GlobalSatete extends VuexModule {
   app_toolbar_search_text: String = "";
   Logininfo: Userinfo | null = null;
   RefreshTokenTimer: number | null = null;
@@ -35,32 +28,36 @@ class GlobalSatete extends VuexModule implements IGlobalState {
   }
 
   @Mutation
-  Login(Userinfo: Userinfo) {
-    this.Logininfo = Userinfo;
-    axios.defaults.headers["Authorization"] = "Bearer " + Userinfo.accesstoken;
-    localStorage.setItem("accesstoken", Userinfo.accesstoken);
+  Login(userinfo: Userinfo) {
+    this.Logininfo = userinfo;
+    if (this.Logininfo != null) {
+      axios.defaults.headers["Authorization"] =
+        "Bearer " + userinfo.access_token;
+      localStorage.setItem("access_token", userinfo.access_token);
+      localStorage.setItem("refresh_token", userinfo.refresh_token);
+    }
   }
 
   @Mutation
   Logout() {
     this.Logininfo = null;
     axios.defaults.headers["Authorization"] = "";
-    localStorage.removeItem("accesstoken");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   }
 
   @Mutation
-  ReFreshToken(token: string) {
+  ReFreshToken(userinfo: Userinfo) {
+    this.Logininfo = userinfo;
     if (this.Logininfo != null) {
-      if (token === undefined) {
-        //Logout 처리
-        this.Logininfo = null;
-        axios.defaults.headers["Authorization"] = "";
-        localStorage.removeItem("accesstoken");
-      } else {
-        this.Logininfo.accesstoken = token;
-        axios.defaults.headers["Authorization"] = "Bearer " + token;
-        localStorage.setItem("accesstoken", token);
-      }
+      axios.defaults.headers["Authorization"] =
+        "Bearer " + userinfo.access_token;
+      localStorage.setItem("access_token", userinfo.access_token);
+      localStorage.setItem("refresh_token", userinfo.refresh_token);
+    } else {
+      axios.defaults.headers["Authorization"] = "";
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
     }
   }
 
@@ -70,9 +67,9 @@ class GlobalSatete extends VuexModule implements IGlobalState {
   }
 
   @Action({ commit: "ReFreshToken" })
-  async onReFreshToken() {
-    if (this.Logininfo != null) {
-      return await this.Logininfo.RefrashToken();
+  async onReFreshToken(refresh_token: string) {
+    if (refresh_token != null) {
+      return await Userinfo.getRefrashToken(refresh_token);
     } else {
       return null;
     }

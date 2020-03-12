@@ -6,7 +6,12 @@
           <div class="headline">활동 유저</div>
         </v-row>
         <v-row align="center" class="d-flex mt-4">
-          <v-select style="max-width:100px" label="검색종류" :items="searchitems" v-model="searchitem"></v-select>
+          <v-select
+            style="max-width:100px"
+            label="검색종류"
+            :items="searchitems"
+            v-model="searchitem"
+          ></v-select>
           <v-text-field
             class="ml-4"
             style="max-width:300px"
@@ -14,11 +19,11 @@
             label="검색어"
             v-model="searchtext"
           ></v-text-field>
-          <v-btn color="primary" class="ml-4" @click="onsearchclick">검색</v-btn>
+          <v-btn color="primary" class="ml-4" @click="onsearchclick"
+            >검색</v-btn
+          >
         </v-row>
-        <v-row>
-          <v-select style="max-width:50px" v-model="options.itemsPerPage" :items="itemperpagelist"></v-select>
-        </v-row>
+
         <v-row>
           <v-col cols="12" class="ma-0 pa-0">
             <v-card>
@@ -27,8 +32,12 @@
                 :items="items"
                 :loading="isloading"
                 :headers="header"
-                hide-default-footer
-              ></v-data-table>
+                :server-items-length="totalitemcount"
+              >
+                <template v-slot:item.joinTime="{ item }">
+                  {{ item.joinTime.toLocal().toFormat("yyyy-MM-dd HH:mm:ss") }}
+                </template>
+              </v-data-table>
               <v-pagination
                 @input="onchangepage"
                 v-model="pagenationpage"
@@ -46,6 +55,7 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import FcubeUserinfo from "@/components/UserInfoPage/FcubeUserinfo";
 import FcubeUserSearchdto from "@/components/UserInfoPage/FcubeUserSearchdto";
+import { DateTime } from "luxon";
 interface TableHeader {
   text: string;
   value: string;
@@ -154,12 +164,14 @@ export default class ActiveUserPage extends Vue {
   totalpagelength = 0;
   searchtext = "";
   pagenationpage = 1;
+  totalitemcount = 0;
   mounted() {
     this.init();
   }
   async init() {}
   @Watch("options", { immediate: true, deep: true })
   async onoptions(value: DataOptions) {
+    this.pagenationpage = this.options.page;
     this.onsearch(value);
   }
   onsearchclick() {
@@ -179,11 +191,10 @@ export default class ActiveUserPage extends Vue {
       searchtext: this.searchtext
     };
     this.options.page = value.page;
-    let temptotalpagelength: number = await FcubeUserinfo.getFcubeUserinfolength(
+    this.totalitemcount = await FcubeUserinfo.getFcubeUserinfolength(
       fcubeUserSearchdto
     );
-    this.totalpagelength =
-      Math.trunc(temptotalpagelength / value.itemsPerPage) + 1;
+    this.totalpagelength = Math.trunc(this.totalitemcount / value.itemsPerPage);
     this.items = await FcubeUserinfo.getFcubeUserinfos(fcubeUserSearchdto);
 
     this.isloading = false;
@@ -191,5 +202,4 @@ export default class ActiveUserPage extends Vue {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

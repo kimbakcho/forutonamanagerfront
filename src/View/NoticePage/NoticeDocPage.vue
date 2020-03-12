@@ -6,7 +6,12 @@
           <v-row class="d-flex mb-4">
             <div class="headline">공지사항 등록</div>
             <v-spacer></v-spacer>
-            <v-dialog persistent v-model="registerflag" width="300" v-if="idx==null">
+            <v-dialog
+              persistent
+              v-model="registerflag"
+              width="300"
+              v-if="idx == null"
+            >
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" v-on="on">등록하기</v-btn>
               </template>
@@ -17,19 +22,27 @@
                       <div>정말로 등록하겠습니까?</div>
                     </v-row>
                     <v-row justify="end">
-                      <v-btn color="primary" @click="registerflag=false">아니요</v-btn>
+                      <v-btn color="primary" @click="registerflag = false"
+                        >아니요</v-btn
+                      >
                       <v-btn
                         class="ml-4"
                         :loading="registerdocloading"
                         @click="registerdoc"
                         color="primary"
-                      >등록</v-btn>
+                        >등록</v-btn
+                      >
                     </v-row>
                   </v-col>
                 </v-card-text>
               </v-card>
             </v-dialog>
-            <v-dialog persistent v-model="modifyflag" width="300" v-if="idx!=null">
+            <v-dialog
+              persistent
+              v-model="modifyflag"
+              width="300"
+              v-if="idx != null && loginInfo.role == 'Admin'"
+            >
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" v-on="on">수정</v-btn>
               </template>
@@ -40,19 +53,27 @@
                       <div>정말로 수정하시겠습니까?</div>
                     </v-row>
                     <v-row justify="end">
-                      <v-btn color="primary" @click="modifyflag=false">아니요</v-btn>
+                      <v-btn color="primary" @click="modifyflag = false"
+                        >아니요</v-btn
+                      >
                       <v-btn
                         class="ml-4"
                         :loading="modifyflagloading"
                         @click="onmodify"
                         color="primary"
-                      >수정</v-btn>
+                        >수정</v-btn
+                      >
                     </v-row>
                   </v-col>
                 </v-card-text>
               </v-card>
             </v-dialog>
-            <v-dialog persistent v-model="deleteflag" width="300" v-if="idx!=null">
+            <v-dialog
+              persistent
+              v-model="deleteflag"
+              width="300"
+              v-if="idx != null && loginInfo.role == 'Admin'"
+            >
               <template v-slot:activator="{ on }">
                 <v-btn class="ml-4" color="primary" v-on="on">삭제</v-btn>
               </template>
@@ -63,13 +84,16 @@
                       <div>정말로 삭제하시겠습니까?</div>
                     </v-row>
                     <v-row justify="end">
-                      <v-btn color="primary" @click="deleteflag=false">아니요</v-btn>
+                      <v-btn color="primary" @click="deleteflag = false"
+                        >아니요</v-btn
+                      >
                       <v-btn
                         class="ml-4"
                         :loading="deleteflagloading"
                         @click="ondelete"
                         color="primary"
-                      >삭제</v-btn>
+                        >삭제</v-btn
+                      >
                     </v-row>
                   </v-col>
                 </v-card-text>
@@ -85,6 +109,7 @@
           </v-row>
           <v-row>
             <VueEditor
+              class="vueEditor"
               ref="vueeditor"
               v-model="pageitem.pageContent"
               :editorOptions="editorSettings"
@@ -145,6 +170,8 @@ import QuillImageDropAndPaste from "quill-image-drop-and-paste";
 import { base64StringToBlob } from "blob-util";
 import Noticepage from "@/components/NoticePage/Noticepage";
 import globalstate from "../../store/modules/globalstate";
+import VideoResize from "quill-video-resize-module2";
+import GlobalSatete from "@/store/modules/globalstate";
 @Component({
   components: {
     VueEditor
@@ -161,10 +188,15 @@ export default class NoticeDocPage extends Vue {
       imageDropAndPaste: {
         handler: this.imageHandler
       },
-      imageResize: true
+      imageResize: true,
+      VideoResize: {
+        modules: ["Resize", "DisplaySize", "Toolbar"],
+        tagName: "iframe" // iframe | video
+      }
     },
     placeholder: "여기에 내용을 입력 하세요."
   };
+  loginInfo = GlobalSatete.Logininfo;
   registerdocloading = false;
   modifyflag = false;
   modifyflagloading = false;
@@ -181,6 +213,7 @@ export default class NoticeDocPage extends Vue {
   created() {
     Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
     Quill.register("modules/imageResize", ImageResize);
+    Quill.register("modules/VideoResize", VideoResize);
     this.init();
   }
 
@@ -204,6 +237,8 @@ export default class NoticeDocPage extends Vue {
   }
   async registerdoc() {
     this.registerdocloading = true;
+    let quill = this.vueeditor.$data.quill;
+
     if (globalstate.Logininfo != null) {
       this.pageitem.pageWriter = globalstate.Logininfo.uid;
       await this.pageitem.writeNoiceDoc();
@@ -243,5 +278,9 @@ export default class NoticeDocPage extends Vue {
 <style lang="scss">
 .quillWrapper {
   width: 100%;
+}
+.vueEditor iframe,
+.vueEditor video {
+  pointer-events: none;
 }
 </style>

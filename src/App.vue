@@ -45,8 +45,7 @@ export default class App extends Vue {
 
   loginManager!: LoginManager;
 
-  async created() {
-    console.log("app Created")
+  created() {
     const tokenManager = new TokenManager(Preference.accessTokenKey,Preference.reFreshTokenKey);
 
     tokenManager.addListeners(new AuthTokenListener());
@@ -58,11 +57,16 @@ export default class App extends Vue {
 
     this.loginManager.addListeners(new AuthLoginListener());
 
+  }
+
+  mounted(){
+    this.init();
+  }
+
+  async init(){
     await this.loginManager.init();
   }
-  mounted(){
-    console.log("app mounted")
-  }
+
 }
 </script>
 

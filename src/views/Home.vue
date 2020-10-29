@@ -13,12 +13,7 @@
     @Component
     export default class Home extends Vue {
 
-      created(){
-        console.log("home Created")
-      }
-      mounted(){
-        console.log("home mounted")
-      }
+
 
     }
 </script>

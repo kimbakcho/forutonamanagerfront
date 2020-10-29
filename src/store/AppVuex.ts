@@ -10,11 +10,12 @@ import {LoginManager} from "vueoauth2login";
 })
 class AppVuex extends VuexModule {
 
-    loginManager!: LoginManager;
+    loginManager: LoginManager|Object = new Object();
 
 
     @Mutation
     setLoginManager(value: LoginManager): void{
+        console.log("setLoginManager");
         this.loginManager = value;
     }
 

@@ -60,7 +60,7 @@
 
 <script lang="ts">
     import { Vue, Component, Ref } from "vue-property-decorator";
-    import container from "../inversify.config";
+    import myContainer from "../inversify.config";
     import TYPES from "../ManagerBis/ManagerBisTypes";
     import {SignUpReqDto} from "../ManagerBis/MUserInfo/Dto/SignUpReqDto";
     // eslint-disable-next-line no-unused-vars
@@ -75,7 +75,7 @@
         private _signUpUseCaseInputPort!: SignUpCaseInputPort;
 
         created() {
-            this._signUpUseCaseInputPort = container.get<SignUpCaseInputPort>(
+            this._signUpUseCaseInputPort = myContainer.get<SignUpCaseInputPort>(
                 TYPES.SignUpUseCaseInputPort
             );
         }

@@ -13,10 +13,10 @@ import Preference from "@/Preference";
 export class MUserInfoRepositoryImpl implements MUserInfoRepository {
 
     async signUp(reqDto: SignUpReqDto): Promise<void> {
-        await Axios.post<MUserInfo>(`/${Preference.backEndUrl}/MUserInfo/SignUp`, reqDto);
+        await Axios.post<MUserInfo>(`${Preference.backEndUrl}/MUserInfo/SignUp`, reqDto);
     }
     async getMe(): Promise<MUserInfo> {
-        const response = await Axios.get<MUserInfo>(`/${Preference.backEndUrl}/MUserInfo/Me`);
+        const response = await Axios.get<MUserInfo>(`${Preference.backEndUrl}/MUserInfo/Me`);
 
         return plainToClass(MUserInfo, response.data);
     }

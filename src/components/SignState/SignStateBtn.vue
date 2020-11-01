@@ -15,16 +15,15 @@
 <script lang="ts">
 
 import GlobalUiKeyVuex from "../../store/GlobalUiKeyVuex";
-import {Component, Prop, Vue} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 
 import UserInfoVuex from "../../store/UserInfoVuex";
-import { LoginManager } from "vueoauth2login";
 
+import Preference from "@/Preference";
 @Component
 export default class SignStateBtn extends Vue {
 
-  @Prop(LoginManager)
-  loginManager!: LoginManager;
+
 
   globalUiKeyVuex = GlobalUiKeyVuex;
 
@@ -32,21 +31,21 @@ export default class SignStateBtn extends Vue {
 
   }
   async logout() {
-    this.loginManager.logout();
-    location.reload();
+    location.href = Preference.logoutPageUrl;
   }
 
   getIsSignIn(): boolean {
-    return this.loginManager.isLogin;
+    return false;
   }
 
   getIsSignOut(): boolean {
     return !this.getIsSignIn()
   }
 
-  gotoLoginPage(){
-    this.loginManager.goLoginPage();
+  async gotoLoginPage() {
+    location.href= Preference.loginPageUrl;
   }
+
 
   getUserName(): string {
     return UserInfoVuex.userInfo.userName;

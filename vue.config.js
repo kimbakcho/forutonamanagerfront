@@ -10,11 +10,11 @@ module.exports = {
     historyApiFallback: true,
     https: true,
     proxy: {
-      "/forutonamanagermentb": {
-        target: "https://localhost:8443/",
+      "/forutonamanagermentbtest": {
+        target: "https://localhost:8443/forutonamanagermentbtest",
         changeOrigin: true,
         pathRewrite: {
-          "^/forutonamanagermentb": "",
+          "^/forutonamanagermentbtest": "",
         },
       },
     },

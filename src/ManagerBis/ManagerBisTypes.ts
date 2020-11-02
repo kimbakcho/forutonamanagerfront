@@ -1,8 +1,11 @@
 const TYPES = {
 
-    MUserInfoRepository: Symbol("MUserInfoRepository"),
-    SignUpUseCaseInputPort: Symbol("SignUpUseCaseInputPort"),
-    MUserInfoUseCaseInputPort: Symbol("MUserInfoUseCaseInputPort"),
+    MUserInfoRepository: Symbol.for("MUserInfoRepository"),
+    SignUpUseCaseInputPort: Symbol.for("SignUpUseCaseInputPort"),
+    MUserInfoUseCaseInputPort: Symbol.for("MUserInfoUseCaseInputPort"),
+    LoginUseCaseInputPort: Symbol.for("LoginUseCaseInputPort"),
+    AxiosInitSetting: Symbol.for("AxiosInitSetting"),
+    LoginManager: Symbol.for("LoginManager")
 
 
 }

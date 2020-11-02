@@ -3,7 +3,7 @@
     <v-btn small v-if="getIsSignOut()" icon @click="gotoLoginPage">
       <v-icon>mdi-login</v-icon>
     </v-btn>
-    <div v-if="getIsSignIn()" class="d-flex align-center">
+    <div v-if="isLogin" class="d-flex align-center">
       <div>{{ getUserName() }}</div>
       <v-btn icon small @click="logout">
         <v-icon>mdi-logout</v-icon>
@@ -16,40 +16,35 @@
 
 import GlobalUiKeyVuex from "../../store/GlobalUiKeyVuex";
 import {Component, Vue} from "vue-property-decorator";
+// eslint-disable-next-line no-unused-vars
+import LoginManager, {LoginManagerComponent} from "@/ManagerBis/Login/LoginUseCase/LoginManager";
+import myContainer from "@/inversify.config";
+import TYPES from "@/ManagerBis/ManagerBisTypes";
 
-import UserInfoVuex from "../../store/UserInfoVuex";
-
-import Preference from "@/Preference";
 @Component
-export default class SignStateBtn extends Vue {
-
+export default class SignStateBtn extends Vue implements LoginManagerComponent{
 
 
   globalUiKeyVuex = GlobalUiKeyVuex;
 
+  _loginManager!: LoginManager;
+
   created() {
-
-  }
-  async logout() {
-    location.href = Preference.logoutPageUrl;
+    this._loginManager = myContainer.get<LoginManager>(TYPES.LoginManager);
   }
 
-  getIsSignIn(): boolean {
-    return false;
+  mounted(){
+    this._loginManager.addListener(this);
   }
 
-  getIsSignOut(): boolean {
-    return !this.getIsSignIn()
+  onLogin(): void {
+    this.$forceUpdate();
   }
 
-  async gotoLoginPage() {
-    location.href= Preference.loginPageUrl;
+  get isLogin(): boolean{
+    return this._loginManager.isLogin;
   }
 
-
-  getUserName(): string {
-    return UserInfoVuex.userInfo.userName;
-  }
 }
 </script>
 

@@ -26,23 +26,37 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import SignStateBtn from "@/components/SignState/SignStateBtn.vue";
+// eslint-disable-next-line no-unused-vars
+import AxiosInitSetting from "@/AxiosInitSetting";
+import myContainer from "@/inversify.config";
+import TYPES from "@/ManagerBis/ManagerBisTypes";
+import LoginManager, {LoginManagerComponent} from "@/ManagerBis/Login/LoginUseCase/LoginManager";
 
 @Component({
   components: {
     SignStateBtn
   }
 })
-export default class App extends Vue {
+export default class App extends Vue implements LoginManagerComponent{
   drawer: boolean | null = null;
 
+  axiosInitSetting!: AxiosInitSetting;
+  loginManager!: LoginManager;
 
   created() {
-
-
+    this.axiosInitSetting = myContainer.get<AxiosInitSetting>(TYPES.AxiosInitSetting);
+    this.axiosInitSetting.init();
+    this.loginManager = myContainer.get<LoginManager>(TYPES.LoginManager);
   }
 
-  async init(){
+  mounted(){
+    this.loginManager.addListener(this);
+    this.loginManager.init();
+  }
 
+
+  onLogin(): void {
+    console.log("onLogin");
   }
 
 }

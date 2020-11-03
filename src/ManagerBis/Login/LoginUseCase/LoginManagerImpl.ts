@@ -2,16 +2,20 @@ import {inject, injectable} from "inversify";
 import LoginUseCaseInputPort from "@/ManagerBis/Login/LoginUseCase/LoginUseCaseInputPort";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 import LoginManager, {LoginManagerComponent} from "@/ManagerBis/Login/LoginUseCase/LoginManager";
+import {MUserInfoResDto} from "@/ManagerBis/MUserInfo/Dto/MUserInfoResDto";
+import {MUserInfoUseCaseInputPort} from "@/ManagerBis/MUserInfo/Domain/UserCase/MUserInfoUseCaseInputPort";
 
 @injectable()
 export class LoginManagerImpl implements LoginManager {
 
     _loginUseCaseInputPort: LoginUseCaseInputPort;
     _loginManagerComponents: LoginManagerComponent[] = [];
+    _mUserInfoUseCaseInputPort: MUserInfoUseCaseInputPort;
 
-
-    constructor(@inject(TYPES.LoginUseCaseInputPort) loginUseCaseInputPort: LoginUseCaseInputPort) {
+    constructor(@inject(TYPES.LoginUseCaseInputPort) loginUseCaseInputPort: LoginUseCaseInputPort,
+                @inject(TYPES.MUserInfoUseCaseInputPort) mUserInfoUseCaseInputPort: MUserInfoUseCaseInputPort) {
         this._loginUseCaseInputPort = loginUseCaseInputPort
+        this._mUserInfoUseCaseInputPort = mUserInfoUseCaseInputPort;
     }
 
     addListener(loginManagerComponent: LoginManagerComponent) {
@@ -35,6 +39,12 @@ export class LoginManagerImpl implements LoginManager {
                 x.onLogin();
             })
         }
+        if(this.isLogin){
+            this.user = await this._mUserInfoUseCaseInputPort.getMe();
+            this._loginManagerComponents.forEach(x=>{
+                x.onUser();
+            })
+        }
     }
 
     removeListener(loginManagerComponent: LoginManagerComponent): void {
@@ -45,5 +55,7 @@ export class LoginManagerImpl implements LoginManager {
     }
 
     isLogin: boolean = false;
+
+    user: MUserInfoResDto = new MUserInfoResDto();
 
 }

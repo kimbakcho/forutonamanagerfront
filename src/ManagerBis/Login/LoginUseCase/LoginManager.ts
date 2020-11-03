@@ -1,5 +1,8 @@
+import {MUserInfoResDto} from "@/ManagerBis/MUserInfo/Dto/MUserInfoResDto";
+
 export interface LoginManagerComponent {
     onLogin(): void;
+    onUser(): void;
 }
 
 export default interface LoginManager {
@@ -9,5 +12,6 @@ export default interface LoginManager {
     removeListener(loginManagerComponent: LoginManagerComponent): void;
     init(): Promise<void>;
     isLogin: boolean;
+    user: MUserInfoResDto;
 }
 

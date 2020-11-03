@@ -10,6 +10,20 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-group
+            :value="false"
+            prepend-icon="mdi-presentation"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>약관 및 정책</v-list-item-title>
+          </template>
+
+          <v-list-item link to="/">
+            <v-list-item-title v-text="'서비스 이용약관'"></v-list-item-title>
+          </v-list-item>
+
+        </v-list-group>
+
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app color="primary" dark>
@@ -30,6 +44,7 @@ import SignStateBtn from "@/components/SignState/SignStateBtn.vue";
 import AxiosInitSetting from "@/AxiosInitSetting";
 import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
+// eslint-disable-next-line no-unused-vars
 import LoginManager, {LoginManagerComponent} from "@/ManagerBis/Login/LoginUseCase/LoginManager";
 
 @Component({
@@ -38,6 +53,7 @@ import LoginManager, {LoginManagerComponent} from "@/ManagerBis/Login/LoginUseCa
   }
 })
 export default class App extends Vue implements LoginManagerComponent{
+
   drawer: boolean | null = null;
 
   axiosInitSetting!: AxiosInitSetting;
@@ -56,7 +72,11 @@ export default class App extends Vue implements LoginManagerComponent{
 
 
   onLogin(): void {
-    console.log("onLogin");
+    this.$forceUpdate();
+  }
+
+  onUser(): void {
+    this.$forceUpdate();
   }
 
 }

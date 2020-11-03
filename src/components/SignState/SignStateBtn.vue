@@ -1,9 +1,9 @@
 <template>
   <div class="SignStateBtn" :key="globalUiKeyVuex.loginBtnKey">
-    <v-btn small v-if="getIsSignOut()" icon @click="gotoLoginPage">
+    <v-btn small v-if="!isLogin()" icon @click="login()">
       <v-icon>mdi-login</v-icon>
     </v-btn>
-    <div v-if="isLogin" class="d-flex align-center">
+    <div v-if="isLogin()" class="d-flex align-center">
       <div>{{ getUserName() }}</div>
       <v-btn icon small @click="logout">
         <v-icon>mdi-logout</v-icon>
@@ -37,12 +37,28 @@ export default class SignStateBtn extends Vue implements LoginManagerComponent{
     this._loginManager.addListener(this);
   }
 
+  login(){
+    this._loginManager.login();
+  }
+
+  logout(){
+    this._loginManager.logout();
+  }
+
   onLogin(): void {
     this.$forceUpdate();
   }
 
-  get isLogin(): boolean{
+  isLogin(): boolean{
     return this._loginManager.isLogin;
+  }
+
+  getUserName(): string{
+    return this._loginManager.user.userName
+  }
+
+  onUser(): void {
+    this.$forceUpdate();
   }
 
 }

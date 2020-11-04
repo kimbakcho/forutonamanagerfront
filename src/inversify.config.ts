@@ -14,6 +14,10 @@ import LoginUseCaseInputPort, {LoginUseCase} from "@/ManagerBis/Login/LoginUseCa
 import AxiosInitSetting from "@/AxiosInitSetting";
 import LoginManager from "@/ManagerBis/Login/LoginUseCase/LoginManager";
 import {LoginManagerImpl} from "@/ManagerBis/Login/LoginUseCase/LoginManagerImpl";
+import TermsConditionsRepository from "@/ManagerBis/TermsConditions/Domain/Repository/TermsConditionsRepository";
+import TermsConditionsRepositoryImpl from "@/ManagerBis/TermsConditions/Data/Repository/TermsConditionsRepositoryImpl";
+import TermsConditionsUseCaseInputPort
+    , {TermsConditionsUseCase} from "@/ManagerBis/TermsConditions/Domain/UseCase/TermsConditionsUseCaseInputPort";
 
 
 const myContainer = new Container();
@@ -24,4 +28,6 @@ myContainer.bind<MUserInfoUseCaseInputPort>(TYPES.MUserInfoUseCaseInputPort).to(
 myContainer.bind<LoginUseCaseInputPort>(TYPES.LoginUseCaseInputPort).to(LoginUseCase).inSingletonScope();
 myContainer.bind<LoginManager>(TYPES.LoginManager).to(LoginManagerImpl).inSingletonScope();
 myContainer.bind<AxiosInitSetting>(TYPES.AxiosInitSetting).to(AxiosInitSetting).inSingletonScope();
+myContainer.bind<TermsConditionsRepository>(TYPES.TermsConditionsRepository).to(TermsConditionsRepositoryImpl).inSingletonScope();
+myContainer.bind<TermsConditionsUseCaseInputPort>(TYPES.TermsConditionsUseCaseInputPort).to(TermsConditionsUseCase).inSingletonScope();
 export default myContainer;

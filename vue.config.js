@@ -14,17 +14,17 @@ module.exports = {
   },
 
   publicPath: process.env.NODE_ENV === 'production'
-      ? "/forutonamanagement/" :
+      ? "/forutonamanagerment/" :
       "/",
   devServer: {
     historyApiFallback: true,
     https: true,
     proxy: {
-      "/forutonamanagermentbtest": {
-        target: "https://localhost:8443/forutonamanagermentbtest",
+      "/bforutonamanagermenttest": {
+        target: "https://localhost:8443/bforutonamanagermenttest",
         changeOrigin: true,
         pathRewrite: {
-          "^/forutonamanagermentbtest": "",
+          "^/bforutonamanagermenttest": "",
         },
       },
     },

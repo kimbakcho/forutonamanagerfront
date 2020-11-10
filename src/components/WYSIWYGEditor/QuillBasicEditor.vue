@@ -12,7 +12,7 @@
 <script lang="ts">
 import ImageResize from "quill-image-resize-module";
 import QuillImageDropAndPaste from "quill-image-drop-and-paste";
-import {Component, Ref, Vue} from "vue-property-decorator";
+import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
 
 // eslint-disable-next-line no-unused-vars
 import { VueEditor, Quill, VueEditorConstructor } from "vue2-editor";
@@ -27,15 +27,12 @@ export default class QuillBasicEditor extends Vue {
   @Ref("vueEditorConstructor")
   _vueEditorConstructor!: VueEditorConstructor;
 
+
+  @Prop(String)
+  value!: string
+
   content: string = "";
 
-  get value(): string{
-    return this.content;
-  }
-
-  set value(value: string){
-    this.content = value;
-  }
 
   created() {
     Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
@@ -62,7 +59,15 @@ export default class QuillBasicEditor extends Vue {
     }
   }
 
+  @Watch("content")
+  changeContent(value: string): void{
+    this.$emit("input",value)
+  }
 
+  @Watch("value")
+  changeValue(value: string): void{
+    this.content = value;
+  }
 }
 </script>
 

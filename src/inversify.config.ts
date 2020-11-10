@@ -18,6 +18,9 @@ import TermsConditionsRepository from "@/ManagerBis/TermsConditions/Domain/Repos
 import TermsConditionsRepositoryImpl from "@/ManagerBis/TermsConditions/Data/Repository/TermsConditionsRepositoryImpl";
 import TermsConditionsUseCaseInputPort
     , {TermsConditionsUseCase} from "@/ManagerBis/TermsConditions/Domain/UseCase/TermsConditionsUseCaseInputPort";
+import NoticeRepository from "@/ManagerBis/Notice/Domain/Repository/NoticeRepository";
+import NoticeRepositoryImpl from "@/ManagerBis/Notice/Data/Repository/NoticeRepositoryImpl";
+import NoticeUseCaseInputPort, {NoticeUseCase} from "@/ManagerBis/Notice/Domain/UseCase/NoticeUseCaseInputPort";
 
 
 const myContainer = new Container();
@@ -30,4 +33,6 @@ myContainer.bind<LoginManager>(TYPES.LoginManager).to(LoginManagerImpl).inSingle
 myContainer.bind<AxiosInitSetting>(TYPES.AxiosInitSetting).to(AxiosInitSetting).inSingletonScope();
 myContainer.bind<TermsConditionsRepository>(TYPES.TermsConditionsRepository).to(TermsConditionsRepositoryImpl).inSingletonScope();
 myContainer.bind<TermsConditionsUseCaseInputPort>(TYPES.TermsConditionsUseCaseInputPort).to(TermsConditionsUseCase).inSingletonScope();
+myContainer.bind<NoticeRepository>(TYPES.NoticeRepository).to(NoticeRepositoryImpl).inSingletonScope();
+myContainer.bind<NoticeUseCaseInputPort>(TYPES.NoticeUseCaseInputPort).to(NoticeUseCase).inSingletonScope();
 export default myContainer;

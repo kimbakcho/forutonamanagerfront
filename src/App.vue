@@ -10,6 +10,16 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/Notice/Page">
+          <v-list-item-action>
+            <v-icon>
+              mdi-alert-circle
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>공지 사항</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-group
             :value="false"
             prepend-icon="mdi-presentation"
@@ -18,10 +28,18 @@
             <v-list-item-title>약관 및 정책</v-list-item-title>
           </template>
 
-          <v-list-item link to="/">
+          <v-list-item link to="/TermsConditionView/15">
             <v-list-item-title v-text="'서비스 이용약관'"></v-list-item-title>
           </v-list-item>
-
+          <v-list-item link to="/TermsConditionView/16">
+            <v-list-item-title v-text="'개인정보 처리방침'"></v-list-item-title>
+          </v-list-item>
+          <v-list-item link to="/TermsConditionView/17">
+            <v-list-item-title v-text="'위치정보 처리방침'"></v-list-item-title>
+          </v-list-item>
+          <v-list-item link to="/TermsConditionView/67">
+            <v-list-item-title v-text="'운영 정책'"></v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
       </v-list>
@@ -32,7 +50,7 @@
       <SignStateBtn :loginManager="loginManager" ></SignStateBtn>
     </v-app-bar>
     <v-main>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"> </router-view>
     </v-main>
   </v-app>
 </template>

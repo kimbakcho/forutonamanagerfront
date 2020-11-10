@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import SignUp from "@/views/SignUp.vue";
+import TermsConditionView from "@/views/TermsConditionView.vue";
+import NoticeView from "@/views/NoticeView.vue";
+import NoticePage from "@/components/Notice/NoticePage.vue";
+import NoticeDocument from "@/components/Notice/NoticeDocument/NoticeDocument.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -14,6 +18,32 @@ const routes: Array<RouteConfig> = [
         path: "/SignUp",
         name: "SignUp",
         component: SignUp
+    },
+    {
+        path:"/Notice",
+        name: "Notice",
+        component: NoticeView,
+        children: [
+            {
+                path: "Page",
+                name: "NoticePage1",
+                component: NoticePage
+            },
+            {
+                path: "Doc",
+                name: "NoticeDoc",
+                component: NoticeDocument,
+                props: (router)=>({
+                    "idx": Number(router.query.idx)
+                })
+            }
+        ]
+    },
+    {
+        path: "/TermsConditionView/:termsIdx",
+        name: "TermsConditionView",
+        component: TermsConditionView,
+        props: true
     },
     {
         path: '/about',

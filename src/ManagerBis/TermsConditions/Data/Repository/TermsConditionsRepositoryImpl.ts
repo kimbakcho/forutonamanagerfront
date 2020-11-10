@@ -10,7 +10,7 @@ import TermsConditionsUpdateDto from "@/ManagerBis/TermsConditions/Dto/TermsCond
 @injectable()
 export default class TermsConditionsRepositoryImpl implements  TermsConditionsRepository {
     async findById(idx: number): Promise<TermsConditionsResDto> {
-        const response = await axios.get<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions/Terms`,{
+        const response = await axios.get<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions`,{
             params: {
                 idx: idx
             }
@@ -19,7 +19,7 @@ export default class TermsConditionsRepositoryImpl implements  TermsConditionsRe
     }
 
     async delete(idx: number): Promise<void> {
-        await axios.delete(`${Preference.backEndUrl}/termsConditions/Terms`,{
+        await axios.delete(`${Preference.backEndUrl}/termsConditions`,{
             params:{
               idx: idx
             }
@@ -27,12 +27,12 @@ export default class TermsConditionsRepositoryImpl implements  TermsConditionsRe
     }
 
     async save(saveReqDto: TermsConditionsSaveDto): Promise<TermsConditionsResDto> {
-        const response = await axios.post<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions/Terms`,saveReqDto);
+        const response = await axios.post<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions`,saveReqDto);
         return plainToClass(TermsConditionsResDto,response.data);
     }
 
     async update(updateReqDto: TermsConditionsUpdateDto): Promise<TermsConditionsResDto> {
-        const response = await axios.put<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions/Terms`,updateReqDto);
+        const response = await axios.put<TermsConditionsResDto>(`${Preference.backEndUrl}/termsConditions`,updateReqDto);
         return plainToClass(TermsConditionsResDto,response.data);
     }
 

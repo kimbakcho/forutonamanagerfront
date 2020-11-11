@@ -9,4 +9,5 @@ export default interface NoticeRepository {
     save(insertNoticeReqDto: InsertNoticeReqDto): Promise<NoticeResDto>;
     updateNotice(updateNoticeReqDto: UpdateNoticeReqDto): Promise<NoticeResDto>;
     deleteById(idx: number): Promise<void>
+    findById(idx: number): Promise<NoticeResDto>;
 }

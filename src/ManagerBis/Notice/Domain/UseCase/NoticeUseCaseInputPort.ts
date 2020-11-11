@@ -12,6 +12,7 @@ export default interface NoticeUseCaseInputPort {
     insertNotice(insertNoticeReqDto: InsertNoticeReqDto): Promise<NoticeResDto>;
     updateNotice(updateNoticeReqDto: UpdateNoticeReqDto): Promise<NoticeResDto>;
     deleteNotice(idx: number): Promise<void>;
+    getNotice(idx: number): Promise<NoticeResDto>;
 }
 @injectable()
 export class NoticeUseCase implements NoticeUseCaseInputPort{
@@ -36,6 +37,10 @@ export class NoticeUseCase implements NoticeUseCaseInputPort{
 
     async updateNotice(updateNoticeReqDto: UpdateNoticeReqDto): Promise<NoticeResDto> {
         return await this._noticeRepository.updateNotice(updateNoticeReqDto);
+    }
+
+    async getNotice(idx: number): Promise<NoticeResDto> {
+       return await this._noticeRepository.findById(idx);
     }
 
 }

@@ -41,30 +41,30 @@ export default class NoticeListTable extends Vue {
     {
       text: "번호",
       value: "idx",
-      sort: true,
+      sortable: true,
       width: 80
     },
     {
       text: "공지사항 제목",
       value: "title",
-      sort: false
+      sortable: false,
     },
     {
       text: "게시 상태",
       value: "openFlag",
-      sort: true,
+      sortable: true,
       width: 120
     },
     {
       text: "작성자",
       value: "writerUid.userName",
-      sort: true,
+      sortable: true,
       width: 120
     },
     {
       text: "등록일시",
       value: "modifyDate",
-      sort: true,
+      sortable: true,
       width: 200
     }
   ];

@@ -37,4 +37,13 @@ export default class NoticeRepositoryImpl implements NoticeRepository {
                 }
             });
     }
+
+    async findById(idx: number): Promise<NoticeResDto> {
+        const response = await axios.get<NoticeResDto>(`${Preference.backEndUrl}/notice/Idx`,{
+            params: {
+                "idx": idx
+            }
+        });
+        return plainToClass(NoticeResDto,response.data) ;
+    }
 }

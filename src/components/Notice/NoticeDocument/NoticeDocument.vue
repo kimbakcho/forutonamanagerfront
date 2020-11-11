@@ -8,6 +8,16 @@
         <NoticeDocumentInsertBtn  class="ma-4" v-if="isInsertMode()" @insertConfirm="insertConfirm">
 
         </NoticeDocumentInsertBtn>
+
+        <NoticeDocumentModifyBtn  class="ma-4" v-if="!isInsertMode()" @modifyConfirm="modifyConfirm">
+
+        </NoticeDocumentModifyBtn>
+
+        <NoticeDocumentDeleteBtn class="ma-4" v-if="!isInsertMode()" @deleteConfirm="deleteConfirm">
+
+        </NoticeDocumentDeleteBtn>
+
+
       </div>
     </div>
     <div>
@@ -56,19 +66,24 @@ import InsertNoticeReqDto from "@/ManagerBis/Notice/Dto/InsertNoticeReqDto";
 // eslint-disable-next-line no-unused-vars
 import NoticeDocumentConfirmDialogInputPort
   from "@/components/Notice/NoticeDocument/NoticeDocumentConfirmDialog/NoticeDocumentConfirmDialogInputPort";
+import NoticeDocumentModifyBtn from "@/components/Notice/NoticeDocument/NoticeDocumentModifyBtn.vue";
+import NoticeDocumentDeleteBtn from "@/components/Notice/NoticeDocument/NoticeDocumentDeleteBtn.vue";
+import UpdateNoticeReqDto from "@/ManagerBis/Notice/Dto/UpdateNoticeReqDto";
 
 @Component(
     {
       components:{
         NoticeDocumentInsertBtn,
+        NoticeDocumentModifyBtn,
+        NoticeDocumentDeleteBtn,
         NoticeDocumentConfirmDialog,
-        QuillBasicEditor
+        QuillBasicEditor,
       }
     }
 )
 export default class NoticeDocument extends Vue {
   @Prop(Number)
-  idx?: number;
+  idx!: number;
 
   @Ref("ConfirmDialog")
   noticeDocumentConfirmDialog!: NoticeDocumentConfirmDialogInputPort;
@@ -83,8 +98,21 @@ export default class NoticeDocument extends Vue {
     this._noticeUseCaseInputPort = myContainer.get<NoticeUseCaseInputPort>(TYPES.NoticeUseCaseInputPort);
   }
 
+  mounted(){
+    if(this.isInsertMode()){
+      this.getNotice(this.idx);
+    }
+  }
+  async getNotice(idx: number):Promise<void>{
+    const noticeResDto = await this._noticeUseCaseInputPort.getNotice(idx);
+    this.title = noticeResDto.title;
+    this.openFlag = noticeResDto.openFlag;
+    this.content = noticeResDto.content;
+    this.$forceUpdate();
+  }
+
   isInsertMode() {
-    return this.idx == undefined
+    return isNaN(this.idx);
   }
 
   async insertConfirm(): Promise<void>{
@@ -94,6 +122,27 @@ export default class NoticeDocument extends Vue {
     insertNoticeReqDto.openFlag = this.openFlag;
     await this._noticeUseCaseInputPort.insertNotice(insertNoticeReqDto);
     this.noticeDocumentConfirmDialog.openDialog("등록하였습니다.");
+  }
+
+  async modifyConfirm(): Promise<void>{
+    if(!this.isInsertMode()){
+      throw new Error("idx is undefined that can't modify Notice")
+    }
+    const updateNoticeReqDto = new UpdateNoticeReqDto();
+    updateNoticeReqDto.content = this.content;
+    updateNoticeReqDto.idx = this.idx;
+    updateNoticeReqDto.openFlag = this.openFlag;
+    updateNoticeReqDto.title = this.title;
+    await this._noticeUseCaseInputPort.updateNotice(updateNoticeReqDto);
+    this.noticeDocumentConfirmDialog.openDialog("수정되었습니다.");
+  }
+
+  async deleteConfirm(): Promise<void>{
+    if(!this.isInsertMode()){
+      throw new Error("idx is undefined can't delete Notice");
+    }
+    await this._noticeUseCaseInputPort.deleteNotice(this.idx);
+    this.noticeDocumentConfirmDialog.openDialog("삭제되었습니다.");
   }
 
   onConfirm(){

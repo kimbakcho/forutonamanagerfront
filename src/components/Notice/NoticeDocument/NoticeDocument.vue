@@ -5,19 +5,17 @@
         {{ isInsertMode() ? "공지사항 등록" : "공지사항 상세" }}
       </div>
       <div class="d-flex">
-        <NoticeDocumentInsertBtn  class="ma-4" v-if="isInsertMode()" @insertConfirm="insertConfirm">
+        <DocumentInsertBtn  class="ma-4" v-if="isInsertMode()" @insertConfirm="insertConfirm">
 
-        </NoticeDocumentInsertBtn>
+        </DocumentInsertBtn>
 
-        <NoticeDocumentModifyBtn  class="ma-4" v-if="!isInsertMode()" @modifyConfirm="modifyConfirm">
+        <DocumentModifyBtn  class="ma-4" v-if="!isInsertMode()" @modifyConfirm="modifyConfirm">
 
-        </NoticeDocumentModifyBtn>
+        </DocumentModifyBtn>
 
-        <NoticeDocumentDeleteBtn class="ma-4" v-if="!isInsertMode()" @deleteConfirm="deleteConfirm">
+        <DocumentDeleteBtn class="ma-4" v-if="!isInsertMode()" @deleteConfirm="deleteConfirm">
 
-        </NoticeDocumentDeleteBtn>
-
-
+        </DocumentDeleteBtn>
       </div>
     </div>
     <div>
@@ -46,17 +44,16 @@
       </QuillBasicEditor>
     </div>
 
-    <NoticeDocumentConfirmDialog ref="ConfirmDialog" @confirm="onConfirm">
+    <DocumentConfirmDialog ref="ConfirmDialog" @confirm="onConfirm">
 
-    </NoticeDocumentConfirmDialog>
+    </DocumentConfirmDialog>
   </div>
 </template>
 
 <script lang="ts">
 import {Component, Prop, Ref, Vue} from "vue-property-decorator";
-import NoticeDocumentInsertBtn from "@/components/Notice/NoticeDocument/NoticeDocumentInsertBtn.vue";
-import NoticeDocumentConfirmDialog
-  from "@/components/Notice/NoticeDocument/NoticeDocumentConfirmDialog/NoticeDocumentConfirmDialog.vue";
+import DocumentConfirmDialog
+  from "@/components/DocumentDialog/DocumentConfirmDialog.vue";
 import QuillBasicEditor from "@/components/WYSIWYGEditor/QuillBasicEditor.vue";
 // eslint-disable-next-line no-unused-vars
 import NoticeUseCaseInputPort from "@/ManagerBis/Notice/Domain/UseCase/NoticeUseCaseInputPort";
@@ -64,19 +61,20 @@ import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 import InsertNoticeReqDto from "@/ManagerBis/Notice/Dto/InsertNoticeReqDto";
 // eslint-disable-next-line no-unused-vars
-import NoticeDocumentConfirmDialogInputPort
-  from "@/components/Notice/NoticeDocument/NoticeDocumentConfirmDialog/NoticeDocumentConfirmDialogInputPort";
-import NoticeDocumentModifyBtn from "@/components/Notice/NoticeDocument/NoticeDocumentModifyBtn.vue";
-import NoticeDocumentDeleteBtn from "@/components/Notice/NoticeDocument/NoticeDocumentDeleteBtn.vue";
+import DocumentConfirmDialogInputPort
+  from "@/components/DocumentDialog/DocumentConfirmDialogInputPort";
+import DocumentModifyBtn from "@/components/DocumentButton/DocumentModifyBtn.vue";
+import DocumentDeleteBtn from "@/components/DocumentButton/DocumentDeleteBtn.vue";
 import UpdateNoticeReqDto from "@/ManagerBis/Notice/Dto/UpdateNoticeReqDto";
+import DocumentInsertBtn from "@/components/DocumentButton/DocumentInsertBtn.vue";
 
 @Component(
     {
       components:{
-        NoticeDocumentInsertBtn,
-        NoticeDocumentModifyBtn,
-        NoticeDocumentDeleteBtn,
-        NoticeDocumentConfirmDialog,
+        DocumentInsertBtn,
+        DocumentModifyBtn,
+        DocumentDeleteBtn,
+        DocumentConfirmDialog,
         QuillBasicEditor,
       }
     }
@@ -86,7 +84,7 @@ export default class NoticeDocument extends Vue {
   idx!: number;
 
   @Ref("ConfirmDialog")
-  noticeDocumentConfirmDialog!: NoticeDocumentConfirmDialogInputPort;
+  noticeDocumentConfirmDialog!: DocumentConfirmDialogInputPort;
 
   title = "";
   content = "";
@@ -99,7 +97,7 @@ export default class NoticeDocument extends Vue {
   }
 
   mounted(){
-    if(this.isInsertMode()){
+    if(!this.isInsertMode()){
       this.getNotice(this.idx);
     }
   }
@@ -125,7 +123,7 @@ export default class NoticeDocument extends Vue {
   }
 
   async modifyConfirm(): Promise<void>{
-    if(!this.isInsertMode()){
+    if(this.isInsertMode()){
       throw new Error("idx is undefined that can't modify Notice")
     }
     const updateNoticeReqDto = new UpdateNoticeReqDto();
@@ -138,7 +136,7 @@ export default class NoticeDocument extends Vue {
   }
 
   async deleteConfirm(): Promise<void>{
-    if(!this.isInsertMode()){
+    if(this.isInsertMode()){
       throw new Error("idx is undefined can't delete Notice");
     }
     await this._noticeUseCaseInputPort.deleteNotice(this.idx);

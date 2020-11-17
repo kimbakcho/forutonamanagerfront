@@ -20,6 +20,16 @@
             <v-list-item-title>공지 사항</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/EventManagement/Page">
+          <v-list-item-action>
+            <v-icon>
+              mdi-calendar
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>이벤트 관리</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-group
             :value="false"
             prepend-icon="mdi-presentation"

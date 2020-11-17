@@ -6,6 +6,9 @@ import TermsConditionView from "@/views/TermsConditionView.vue";
 import NoticeView from "@/views/NoticeView.vue";
 import NoticePage from "@/components/Notice/NoticePage.vue";
 import NoticeDocument from "@/components/Notice/NoticeDocument/NoticeDocument.vue";
+import EventManagementView from "@/views/EventManagementView.vue";
+import EventManagementPage from "@/components/EventManagement/EventManagementPage.vue";
+import EventManagementDocument from "@/components/EventManagement/EventManagementDocument/EventManagementDocument.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -35,6 +38,26 @@ const routes: Array<RouteConfig> = [
                 component: NoticeDocument,
                 props: (router)=>({
                     "idx": Number(router.query.idx)
+                })
+            }
+        ]
+    },
+    {
+        path:"/EventManagement",
+        name:"EventManagement",
+        component: EventManagementView,
+        children: [
+            {
+                path: "Page",
+                name: "EventManagementPage1",
+                component: EventManagementPage
+            },
+            {
+                path: "Doc",
+                name: "EventManagementDoc",
+                component: EventManagementDocument,
+                props: (router)=>({
+                    "idx":Number(router.query.idx)
                 })
             }
         ]

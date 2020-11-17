@@ -25,7 +25,7 @@
 import {Component, Emit, Vue} from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class DocumentInsertBtn extends Vue {
   dialogFlag = false;
 
   @Emit("insertConfirm")

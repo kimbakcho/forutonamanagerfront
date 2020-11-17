@@ -9,5 +9,8 @@ const TYPES = {
     TermsConditionsUseCaseInputPort: Symbol.for("TermsConditionsUseCaseInputPort"),
     NoticeRepository: Symbol.for("NoticeRepository"),
     NoticeUseCaseInputPort: Symbol.for("NoticeUseCaseInputPort"),
+    EventManagementRepository: Symbol.for("EventManagementRepository"),
+    EventManagementUseCaseInputPort: Symbol.for("EventManagementUseCaseInputPort"),
+    EventManagementListTableStatue: Symbol.for("EventManagementListTableStatue")
 }
 export default TYPES;

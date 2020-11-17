@@ -18,11 +18,11 @@
 <script lang="ts">
 import {Component, Emit, Vue} from "vue-property-decorator";
 // eslint-disable-next-line no-unused-vars
-import NoticeDocumentConfirmDialogInputPort
-  from "@/components/Notice/NoticeDocument/NoticeDocumentConfirmDialog/NoticeDocumentConfirmDialogInputPort";
+import DocumentConfirmDialogInputPort
+  from "@/components/DocumentDialog/DocumentConfirmDialogInputPort";
 
 @Component
-export default class NoticeDocumentConfirmDialog  extends Vue implements NoticeDocumentConfirmDialogInputPort{
+export default class DocumentConfirmDialog  extends Vue implements DocumentConfirmDialogInputPort{
 
   message = "";
 

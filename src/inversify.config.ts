@@ -21,6 +21,12 @@ import TermsConditionsUseCaseInputPort
 import NoticeRepository from "@/ManagerBis/Notice/Domain/Repository/NoticeRepository";
 import NoticeRepositoryImpl from "@/ManagerBis/Notice/Data/Repository/NoticeRepositoryImpl";
 import NoticeUseCaseInputPort, {NoticeUseCase} from "@/ManagerBis/Notice/Domain/UseCase/NoticeUseCaseInputPort";
+import EventManagementRepository from "@/ManagerBis/EventManagement/Domain/Repository/EventManagementRepository";
+import EventManagementRepositoryImpl from "@/ManagerBis/EventManagement/Data/Repository/EventManagementRepositoryImpl";
+import EventManagementUseCaseInputPort
+    , {EventManagementUseCase} from "@/ManagerBis/EventManagement/Domain/UseCase/EventManagementUseCaseInputPort";
+import EventManagementListTableStatue
+    from "@/components/EventManagement/EventManagementListTable/EventManagementListTableStatue";
 
 
 const myContainer = new Container();
@@ -35,4 +41,7 @@ myContainer.bind<TermsConditionsRepository>(TYPES.TermsConditionsRepository).to(
 myContainer.bind<TermsConditionsUseCaseInputPort>(TYPES.TermsConditionsUseCaseInputPort).to(TermsConditionsUseCase).inSingletonScope();
 myContainer.bind<NoticeRepository>(TYPES.NoticeRepository).to(NoticeRepositoryImpl).inSingletonScope();
 myContainer.bind<NoticeUseCaseInputPort>(TYPES.NoticeUseCaseInputPort).to(NoticeUseCase).inSingletonScope();
+myContainer.bind<EventManagementRepository>(TYPES.EventManagementRepository).to(EventManagementRepositoryImpl).inSingletonScope();
+myContainer.bind<EventManagementUseCaseInputPort>(TYPES.EventManagementUseCaseInputPort).to(EventManagementUseCase).inSingletonScope();
+myContainer.bind<EventManagementListTableStatue>(TYPES.EventManagementListTableStatue).to(EventManagementListTableStatue).inSingletonScope();
 export default myContainer;

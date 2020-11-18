@@ -1,5 +1,6 @@
 declare module "quill-image-resize-module";
 declare module "quill-image-drop-and-paste";
+declare module "vue-google-autocomplete";
 declare module "vue2-editor" {
     import { VueConstructor } from "vue";
     import { DirectiveOptions } from "vue/types/options";

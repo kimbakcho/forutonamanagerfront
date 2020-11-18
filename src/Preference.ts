@@ -12,4 +12,6 @@ export default class Preference {
         ? 'https://forutona.thkomeet.com:8443/bforutonamanagerment/logout'
         : 'https://localhost:8443/bforutonamanagermenttest/logout';
 
+    static googleMapBrowserApiKey = "AIzaSyDj5AJThWwAVV70QDj4s_zvQNVV_CMd0SE"
+
 }

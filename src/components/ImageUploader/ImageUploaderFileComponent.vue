@@ -55,11 +55,12 @@ export default class ImageUploaderFileComponent extends Vue implements ImageUplo
 
   deleteFlag = false;
 
+  deleteFileUrl?: string;
+
 
   created() {
     if (this.previewImageUrl != undefined) {
       this.imageUrl = this.previewImageUrl;
-      this.deleteFlag = false;
     }
   }
 
@@ -79,15 +80,18 @@ export default class ImageUploaderFileComponent extends Vue implements ImageUplo
     this.currentFile = e
     if(this.currentFile != undefined){
       this.imageUrl = URL.createObjectURL(this.currentFile);
-      this.deleteFlag = false;
+      if(this.previewImageUrl != undefined){
+        this.deleteFileUrl = this.previewImageUrl;
+        this.deleteFlag = true;
+      }
     }
   }
 
-  getFiles(): File {
+  getFile(): File | undefined{
     return this.currentFile;
   }
 
-  hasFiles(): boolean {
+  hasFile(): boolean {
     if (this.currentFile != undefined) {
       return true;
     } else {
@@ -98,7 +102,10 @@ export default class ImageUploaderFileComponent extends Vue implements ImageUplo
   deleteImageFile() {
     this.currentFile = undefined;
     this.imageUrl = undefined;
-    this.deleteFlag = true;
+    if(this.previewImageUrl != undefined){
+      this.deleteFileUrl = this.previewImageUrl;
+      this.deleteFlag = true;
+    }
     this.imageUploadForm.reset();
     this.$forceUpdate();
   }

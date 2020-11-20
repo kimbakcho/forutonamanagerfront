@@ -13,6 +13,7 @@ export default interface EventManagementUseCaseInputPort {
     get(eventSearchType: EventSearchType,pageable: Pageable): Promise<PageWrap<EventManagementResDto>>;
     delete(idx: number): Promise<void>;
     update(reqDto: EventManagementUpdateReqDto): Promise<EventManagementResDto>;
+    uploadListThumbnailImage(imageFile :File): Promise<EventManagementResDto>;
 }
 
 @injectable()
@@ -38,6 +39,10 @@ export class EventManagementUseCase implements EventManagementUseCaseInputPort{
 
     async update(reqDto: EventManagementUpdateReqDto): Promise<EventManagementResDto> {
         return this._eventManagementRepository.update(reqDto);
+    }
+
+    async uploadListThumbnailImage(imageFile :File): Promise<EventManagementResDto> {
+        return await this._eventManagementRepository.uploadListThumbnailImage(imageFile);
     }
 
 }

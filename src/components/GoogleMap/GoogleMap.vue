@@ -21,7 +21,7 @@ import Preference from "@/Preference";
 // eslint-disable-next-line no-unused-vars
 import GoogleMapInputPort from "@/components/GoogleMap/GoogleMapInputPort";
 
-@Component()
+@Component
 export default class GoogleMap extends Vue implements GoogleMapInputPort{
 
   @Ref("GoogleMap")
@@ -128,6 +128,10 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
 
   getMarkers(): google.maps.Marker[] {
     return this.markers;
+  }
+
+  getCurrentLatLng(): google.maps.LatLng {
+    return this.markers[0].getPosition();
   }
 
 }

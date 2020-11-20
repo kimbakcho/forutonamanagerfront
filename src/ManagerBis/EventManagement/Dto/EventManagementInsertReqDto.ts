@@ -9,6 +9,6 @@ export default class EventManagementInsertReqDto {
     eventStartDateTime!: string;
     eventEndDateTime!: string;
     eventStartPositionLat!: number;
-    eventStarPositionLng!: number;
+    eventStartPositionLng!: number;
     detailedDescription!: string;
 }

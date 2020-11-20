@@ -1,5 +1,7 @@
 export default  interface ImageUploaderFileComponentInputPort{
     hasImage(): boolean;
-    getFiles(): File;
-    hasFiles(): boolean;
+    getFile(): File  | undefined;
+    hasFile(): boolean;
+    deleteFlag: boolean;
+    deleteFileUrl?: string;
 }

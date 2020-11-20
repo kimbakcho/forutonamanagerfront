@@ -106,14 +106,27 @@
 
         </v-text-field>
       </div>
-      <div class="d-flex">
-        <ImageUploaderFileComponent class="ma-4" label="리스트 썸네일" placeholder="파일 업로드" id="listThumbnailImage">
+      <div class="d-flex" id="imagePanel">
+        <ImageUploaderFileComponent ref="listThumbnailImage" class="ma-4" label="리스트 썸네일" placeholder="파일 업로드" id="listThumbnailImage">
 
         </ImageUploaderFileComponent>
 
-        <ImageUploaderFileComponent class="ma-4"  label="상세 썸네일" placeholder="파일 업로드" id="detailthumbnailImage">
+        <ImageUploaderFileComponent ref="detailThumbnailImage" class="ma-4"  label="상세 썸네일" placeholder="파일 업로드" id="detailThumbnailImage">
 
         </ImageUploaderFileComponent>
+      </div>
+      <div>
+        <div>
+          상세 설명
+        </div>
+        <QuillBasicEditor class="ma-4" v-model = "detailContent">
+
+        </QuillBasicEditor>
+      </div>
+      <div>
+        <SingleFileUpload ref="webViewUpload" class="ma-4" id="WebViewUpload" label="웹뷰파일">
+
+        </SingleFileUpload>
       </div>
 
     </v-form>
@@ -134,6 +147,18 @@ import GoogleMap from "@/components/GoogleMap/GoogleMap.vue";
 // eslint-disable-next-line no-unused-vars
 import GoogleMapInputPort from "@/components/GoogleMap/GoogleMapInputPort";
 import ImageUploaderFileComponent from "@/components/ImageUploader/ImageUploaderFileComponent.vue";
+import QuillBasicEditor from "@/components/WYSIWYGEditor/QuillBasicEditor.vue";
+import SingleFileUpload from "@/components/SingleFileUpload/SingleFileUpload.vue";
+// eslint-disable-next-line no-unused-vars
+import ImageUploaderFileComponentInputPort from "@/components/ImageUploader/ImageUploaderFileComponentInputPort";
+// eslint-disable-next-line no-unused-vars
+import SingleFileUploadInputPort from "@/components/SingleFileUpload/SingleFileUploadInputPort";
+// eslint-disable-next-line no-unused-vars
+import EventManagementUseCaseInputPort
+  from "@/ManagerBis/EventManagement/Domain/UseCase/EventManagementUseCaseInputPort";
+import myContainer from "@/inversify.config";
+import TYPES from "@/ManagerBis/ManagerBisTypes";
+import EventManagementInsertReqDto from "@/ManagerBis/EventManagement/Dto/EventManagementInsertReqDto";
 @Component({
   components: {
     DocumentDeleteBtn,
@@ -142,8 +167,9 @@ import ImageUploaderFileComponent from "@/components/ImageUploader/ImageUploader
     DocumentConfirmDialog,
     CustomTextFieldDateTimePicker,
     GoogleMap,
-    ImageUploaderFileComponent
-
+    ImageUploaderFileComponent,
+    QuillBasicEditor,
+    SingleFileUpload
   }
 })
 export default class EventManagementDocument extends Vue {
@@ -152,6 +178,15 @@ export default class EventManagementDocument extends Vue {
 
   @Ref("googleMap")
   googleMap!: GoogleMapInputPort;
+
+  @Ref("listThumbnailImage")
+  listThumbnailImage!: ImageUploaderFileComponentInputPort;
+
+  @Ref("detailThumbnailImage")
+  detailThumbnailImage!: ImageUploaderFileComponentInputPort;
+
+  @Ref("webViewUpload")
+  webViewUpload!: SingleFileUploadInputPort;
 
   category = EventCategoryType.DEFAULT;
 
@@ -179,9 +214,14 @@ export default class EventManagementDocument extends Vue {
 
   detailAddress = ""
 
+  detailContent = ""
+
+  _eventManagementUseCaseInputPort!: EventManagementUseCaseInputPort;
+
   created(){
     this.eventStartDateTime = DateTime.local().toFormat("yyyy-MM-dd'T'HH:mm:ss");
     this.eventEndDateTime = DateTime.local().plus({day:1}).toFormat("yyyy-MM-dd'T'HH:mm:ss");
+    this._eventManagementUseCaseInputPort = myContainer.get<EventManagementUseCaseInputPort>(TYPES.EventManagementUseCaseInputPort);
   }
 
 
@@ -189,7 +229,20 @@ export default class EventManagementDocument extends Vue {
     return isNaN(this.idx);
   }
 
-  insertConfirm() {
+  async insertConfirm() {
+    const reqDto = new EventManagementInsertReqDto();
+    reqDto.title = this.title;
+    reqDto.allowComments = this.replyAllowFlag;
+    reqDto.isOpen = this.openFlag;
+    reqDto.category = this.category;
+    reqDto.detailedDescription = this.detailContent;
+    reqDto.eventEndDateTime = this.eventEndDateTime;
+    reqDto.eventStartDateTime = this.eventStartDateTime;
+    reqDto.eventStartPositionLng =  this.googleMap.getCurrentLatLng().lng();
+    reqDto.eventStartPositionLat =  this.googleMap.getCurrentLatLng().lat();
+    reqDto.subTitle = this.subTitle
+    await this._eventManagementUseCaseInputPort.insert(reqDto)
+
 
   }
 
@@ -217,9 +270,14 @@ export default class EventManagementDocument extends Vue {
   width: 400px;
   height: 400px;
 }
-
-#detailthumbnailImage{
+#detailThumbnailImage{
   width: 400px;
   height: 400px;
+}
+#imagePanel{
+  height: 550px;
+}
+#WebViewUpload{
+  width: 400px;
 }
 </style>

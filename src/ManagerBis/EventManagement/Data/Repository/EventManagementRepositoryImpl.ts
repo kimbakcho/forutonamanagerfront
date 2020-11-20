@@ -31,8 +31,8 @@ export default class EventManagementRepositoryImpl implements EventManagementRep
     }
 
     async deleteById(idx: number): Promise<void> {
-        await axios.delete(`${Preference.backEndUrl}/eventManagement`,{
-            params:{
+        await axios.delete(`${Preference.backEndUrl}/eventManagement`, {
+            params: {
                 "idx": idx
             }
         });
@@ -41,6 +41,17 @@ export default class EventManagementRepositoryImpl implements EventManagementRep
     async update(reqDto: EventManagementUpdateReqDto): Promise<EventManagementResDto> {
         const response = await axios.put<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement`, reqDto)
         return plainToClass(EventManagementResDto, response.data)
+    }
+
+    async uploadListThumbnailImage(imageFile: File): Promise<EventManagementResDto> {
+        const formData = new FormData();
+        formData.append("listThumbnail", imageFile);
+        const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/listThumbnail`, formData,
+            {
+                headers: {"Content-Type": "multipart/form-data"}
+            }
+        );
+        return plainToClass(EventManagementResDto,response.data);
     }
 
 }

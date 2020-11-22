@@ -3,6 +3,6 @@ export default class Pageable {
     size!: number;
     sort!: string;
     setSort(column: string,Desc: boolean){
-        this.sort = `${column},`+Desc ? "DESC" : "ASC";
+        this.sort = `${column},`+ (Desc ? "DESC" : "ASC");
     }
 }

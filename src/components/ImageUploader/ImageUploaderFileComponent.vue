@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Ref, Vue} from "vue-property-decorator";
+import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
 // eslint-disable-next-line no-unused-vars
 import ImageUploaderFileComponentInputPort from "@/components/ImageUploader/ImageUploaderFileComponentInputPort";
 
@@ -59,7 +59,7 @@ export default class ImageUploaderFileComponent extends Vue implements ImageUplo
 
 
   created() {
-    if (this.previewImageUrl != undefined) {
+    if (this.previewImageUrl != undefined && this.previewImageUrl.length > 0) {
       this.imageUrl = this.previewImageUrl;
     }
   }
@@ -108,6 +108,13 @@ export default class ImageUploaderFileComponent extends Vue implements ImageUplo
     }
     this.imageUploadForm.reset();
     this.$forceUpdate();
+  }
+
+  @Watch("previewImageUrl")
+  watchPreviewImageUrl(value: string){
+    if (value != undefined && value.length > 0) {
+      this.imageUrl = value;
+    }
   }
 
 }

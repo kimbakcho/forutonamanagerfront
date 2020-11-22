@@ -13,7 +13,10 @@ export default interface EventManagementUseCaseInputPort {
     get(eventSearchType: EventSearchType,pageable: Pageable): Promise<PageWrap<EventManagementResDto>>;
     delete(idx: number): Promise<void>;
     update(reqDto: EventManagementUpdateReqDto): Promise<EventManagementResDto>;
-    uploadListThumbnailImage(imageFile :File): Promise<EventManagementResDto>;
+    uploadListThumbnailImage(imageFile :File,eventIdx: number): Promise<EventManagementResDto>;
+    uploadDetailPageThumbnail(imageFile: File,eventIdx: number): Promise<EventManagementResDto>;
+    uploadWebViewArea(webViewFile: File,eventIdx: number): Promise<EventManagementResDto>;
+    getIdx(idx: number):Promise<EventManagementResDto>;
 }
 
 @injectable()
@@ -41,8 +44,20 @@ export class EventManagementUseCase implements EventManagementUseCaseInputPort{
         return this._eventManagementRepository.update(reqDto);
     }
 
-    async uploadListThumbnailImage(imageFile :File): Promise<EventManagementResDto> {
-        return await this._eventManagementRepository.uploadListThumbnailImage(imageFile);
+    async uploadListThumbnailImage(imageFile: File,eventIdx: number): Promise<EventManagementResDto> {
+        return await this._eventManagementRepository.uploadListThumbnailImage(imageFile,eventIdx);
+    }
+
+    async uploadDetailPageThumbnail(imageFile: File,eventIdx: number): Promise<EventManagementResDto> {
+        return await this._eventManagementRepository.uploadDetailPageThumbnail(imageFile,eventIdx);
+    }
+
+    async uploadWebViewArea(webViewFile: File,eventIdx: number): Promise<EventManagementResDto> {
+        return await this._eventManagementRepository.uploadWebViewArea(webViewFile,eventIdx);
+    }
+
+    async getIdx(idx: number): Promise<EventManagementResDto> {
+        return await this._eventManagementRepository.findById(idx);
     }
 
 }

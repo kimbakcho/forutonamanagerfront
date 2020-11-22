@@ -4,10 +4,7 @@
       :headers="headers"
       @update:options="onOptions"
       :server-items-length.sync="serverItemsLength"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :page.sync="currentPage"
-      :items-per-page.sync="itemPerPage"
+      :options.sync="options"
       :items="currentItem"
     >
       <template v-slot:item.openFlag="{ item }"  >
@@ -69,11 +66,15 @@ export default class NoticeListTable extends Vue {
     }
   ];
 
+  options: DataOptions = {
+    page : 1,
+    itemsPerPage: 10,
+    sortBy: ["modifyDate"],
+    sortDesc: [true],
+  }
+
   serverItemsLength = 0;
-  sortBy = ["modifyDate"];
-  sortDesc = [true];
-  itemPerPage = 10
-  currentPage = 1;
+
   currentItem: NoticeResDto[] = [];
 
   _noticeUseCaseInputPort!:NoticeUseCaseInputPort;

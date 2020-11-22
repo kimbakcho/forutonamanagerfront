@@ -6,7 +6,7 @@
       </v-file-input>
     </div>
     <div v-if="hasDownLoadFile()" class="d-flex">
-      <a :href="downLoadFile">webViewFile</a>
+      <a download :href="downLoadFile" target="_blank" >webViewFile</a>
       <v-btn @click="deleteFile">
         삭제
       </v-btn>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 // eslint-disable-next-line no-unused-vars
 import SingleFileUploadInputPort from "@/components/SingleFileUpload/SingleFileUploadInputPort";
 
@@ -26,8 +26,7 @@ export default class SingleFileUpload extends Vue implements SingleFileUploadInp
   preDownLoadFile?: string
 
   @Prop(String)
-  label: string;
-
+  label?: string;
 
   downLoadFile = "";
 
@@ -38,9 +37,8 @@ export default class SingleFileUpload extends Vue implements SingleFileUploadInp
   deleteFlag = false;
 
 
-
   created(){
-    if(this.preDownLoadFile != undefined){
+    if(this.preDownLoadFile != undefined && this.preDownLoadFile.length > 0){
       this.downLoadFile = this.preDownLoadFile;
     }
   }
@@ -76,6 +74,14 @@ export default class SingleFileUpload extends Vue implements SingleFileUploadInp
       return false;
     }
   }
+
+  @Watch("preDownLoadFile")
+  watchPreDownLoadFile(value: string){
+    if(value != undefined && value.length > 0){
+      this.downLoadFile = value;
+    }
+  }
+
 }
 </script>
 

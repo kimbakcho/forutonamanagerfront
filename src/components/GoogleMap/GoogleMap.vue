@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex">
-      <input ref="placeAuto" id="placeAuto" type="text" >
+      <input ref="placeAuto" id="placeAuto" type="text">
       <div>
         {{ currentAddress }}
       </div>
@@ -20,9 +20,11 @@ import {Loader, LoaderOptions} from 'google-maps';
 import Preference from "@/Preference";
 // eslint-disable-next-line no-unused-vars
 import GoogleMapInputPort from "@/components/GoogleMap/GoogleMapInputPort";
+// eslint-disable-next-line no-unused-vars
+import CustomLatLng from "@/ManagerBis/Common/CustomLatLng";
 
 @Component
-export default class GoogleMap extends Vue implements GoogleMapInputPort{
+export default class GoogleMap extends Vue implements GoogleMapInputPort {
 
   @Ref("GoogleMap")
   googleMapElement!: HTMLElement;
@@ -45,13 +47,13 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
 
   currentAddress = "";
 
-  created(){
+  created() {
     const options: LoaderOptions = {
-       language: "ko",
+      language: "ko",
       region: "KR",
-      libraries:["places"]
+      libraries: ["places"]
     };
-    this.loader = new Loader(this.apiKey,options);
+    this.loader = new Loader(this.apiKey, options);
 
   }
 
@@ -61,7 +63,7 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
       center: {lat: 37.5088141, lng: 126.8890174},
       zoom: 15,
     });
-    this.map.addListener('click',this.onMapClick)
+    this.map.addListener('click', this.onMapClick)
 
     // eslint-disable-next-line no-undef
     this.autocomplete = new google.maps.places.Autocomplete(
@@ -69,24 +71,26 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
     );
 
     this.autocomplete.addListener('place_changed', this.onPlaceChanged);
+    this.onMapLoaded();
   }
 
-  onPlaceChanged(){
+  onPlaceChanged() {
     let place = this.autocomplete.getPlace();
-    if(place.geometry != undefined) {
+    if (place.geometry != undefined) {
       this._clearMarker();
       this.map.setCenter(place.geometry.location)
       this._addMarker(place.geometry.location)
     }
   }
 
-  onMapClick(value: any){
+  onMapClick(value: any) {
     const latLng = value.latLng as google.maps.LatLng;
     this._clearMarker();
     this._addMarker(latLng)
   }
 
-  _addMarker(latLng: google.maps.LatLng){
+
+  _addMarker(latLng: google.maps.LatLng) {
     // eslint-disable-next-line no-undef
     const marker = new google.maps.Marker({
       position: latLng,
@@ -97,33 +101,38 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
 
     // eslint-disable-next-line no-undef
     const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({location: latLng},this.geocodeHandler)
+    geocoder.geocode({location: latLng}, this.geocodeHandler)
     this.markers.push(marker);
   }
 
-  geocodeHandler( results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus){
+  geocodeHandler(results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) {
     // eslint-disable-next-line no-undef
-    if(status == google.maps.GeocoderStatus.OK){
+    if (status == google.maps.GeocoderStatus.OK) {
       this.currentAddress = results[0].formatted_address;
       this.changeCurrentAddress(this.currentAddress);
     }
   }
 
   @Emit("changeCurrentAddress")
-  changeCurrentAddress(address: String){
+  changeCurrentAddress(address: String) {
     return address;
   }
 
   @Emit("changeCurrentMarkerLatLng")
-  changeCurrentMarkerLatLng(latLng: google.maps.LatLng){
+  changeCurrentMarkerLatLng(latLng: google.maps.LatLng) {
     return latLng;
   }
 
-  _clearMarker(){
-    this.markers.forEach(x=>{
+  @Emit("mapLoaded")
+  onMapLoaded() {
+    return;
+  }
+
+  _clearMarker() {
+    this.markers.forEach(x => {
       x.setMap(null);
     })
-    this.markers.splice(0,this.markers.length);
+    this.markers.splice(0, this.markers.length);
   }
 
   getMarkers(): google.maps.Marker[] {
@@ -131,18 +140,43 @@ export default class GoogleMap extends Vue implements GoogleMapInputPort{
   }
 
   getCurrentLatLng(): google.maps.LatLng {
-    return this.markers[0].getPosition();
+    const position = this.markers[0].getPosition();
+    if (position == null || position == undefined) {
+      throw new Error("don't have marker")
+    }
+    return position;
+  }
+
+  initMarker(initMarkerPosition: CustomLatLng | undefined): void {
+    this._clearMarker();
+    if (initMarkerPosition != undefined && this.map != undefined) {
+      // eslint-disable-next-line no-undef
+      const marker = new google.maps.Marker({
+        // eslint-disable-next-line no-undef
+        position: new google.maps.LatLng(initMarkerPosition.lat,initMarkerPosition.lng),
+        map: this.map,
+      });
+
+      this.markers.push(marker);
+
+      if (initMarkerPosition.lat != undefined && initMarkerPosition.lng != undefined) {
+        // eslint-disable-next-line no-undef
+        this.map.setCenter(new google.maps.LatLng(initMarkerPosition.lat,initMarkerPosition.lng))
+        this.map.setZoom(15)
+      }
+    }
   }
 
 }
 </script>
 
 <style scoped>
-#googleMap{
+#googleMap {
   width: 100%;
   height: 100%;
 }
-#placeAuto{
+
+#placeAuto {
   width: 500px;
   border: black solid 1px;
 }

@@ -7,11 +7,16 @@
       <v-data-table
         :headers="headers"
         :items="eventManagementResDtos"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
-        :items-per-page.sync="pageSize"
         :server-items-length="getServerItemsLength()"
+        :options.sync="_eventManagementListTableStatue.dataOptions"
+        @update:options="_getTableList"
       >
+        <template v-slot:item.title = "{ item }">
+          <router-link :to="'./Doc?idx='+String(item.idx)"> {{item.title}} </router-link>
+        </template>
+        <template v-slot:item.processState = "{ item }">
+          {{ getProcessState(item) }}
+        </template>
 
       </v-data-table>
     </div>
@@ -36,7 +41,8 @@ import Pageable from "@/ManagerBis/Common/Pageable";
 // eslint-disable-next-line no-unused-vars
 import EventManagementResDto from "@/ManagerBis/EventManagement/Dto/EventManagementResDto";
 // eslint-disable-next-line no-unused-vars
-import {DataTableHeader} from "vuetify";
+import {DataOptions, DataTableHeader} from "vuetify";
+import {DateTime} from "luxon";
 
 @Component(
     {
@@ -73,36 +79,37 @@ export default class EventManagementListTable extends Vue {
       text: "작성자",
       value: "writerUid.userName",
       sortable: true,
+      width: "100"
     },
     {
       text: "이벤트 시작",
       value: "eventStartDateTime",
       sortable: true,
+      width: "100"
     },
     {
       text: "이벤트 종료",
       value: "eventEndDateTime",
       sortable: true,
-    },
-    {
-      text: "이벤트 종료",
-      value: "eventEndDateTime",
-      sortable: true,
+      width: "100"
     },
     {
       text: "조회수",
       value: "views",
-      sortable: true
+      sortable: true,
+      width: "100"
     },
     {
       text: "공개상태",
       value: "isOpen",
-      sortable: true
+      sortable: true,
+      width: "100"
     },
     {
       text: "진행상태",
-      value: "empty",
-      sortable: false
+      value: "processState",
+      sortable: false,
+      width: "100"
     }
 
   ]
@@ -117,39 +124,23 @@ export default class EventManagementListTable extends Vue {
   }
 
   async _getTableList(): Promise<void>{
+    const dataOptions = this._eventManagementListTableStatue.dataOptions;
+    if(dataOptions == undefined){
+      return ;
+    }
+
     const pageable = new Pageable();
-    pageable.page = this._eventManagementListTableStatue.page - 1;
-    pageable.size = this._eventManagementListTableStatue.pageSize;
-    pageable.setSort(this._eventManagementListTableStatue.sortBy,this._eventManagementListTableStatue.sortDesc);
+    pageable.page = dataOptions.page - 1;
+    pageable.size = dataOptions.itemsPerPage;
+    if(dataOptions.sortBy.length > 0){
+      pageable.setSort(dataOptions.sortBy[0],dataOptions.sortDesc[0]);
+    }
     const pageWrap = await this._eventManagementUseCaseInputPort.get(this._eventManagementListTableStatue.eventSearchType,pageable);
     this.eventManagementResDtos = pageWrap.content;
     this._eventManagementListTableStatue.serverItemsLength = pageWrap.totalElements;
     this.$forceUpdate();
   }
 
-  get sortBy(): string {
-    return this._eventManagementListTableStatue.sortBy;
-  }
-
-  set sortBy(value: string) {
-    this._eventManagementListTableStatue.sortBy = value;
-  }
-
-  get sortDesc(): boolean {
-    return this._eventManagementListTableStatue.sortDesc;
-  }
-
-  set sortDesc(value: boolean) {
-    this._eventManagementListTableStatue.sortDesc = value;
-  }
-
-  get pageSize(): number {
-    return this._eventManagementListTableStatue.pageSize;
-  }
-
-  set pageSize(value: number)  {
-    this._eventManagementListTableStatue.pageSize = value;
-  }
 
   getServerItemsLength() {
     return  this._eventManagementListTableStatue.serverItemsLength;
@@ -158,6 +149,22 @@ export default class EventManagementListTable extends Vue {
   // eslint-disable-next-line no-unused-vars
   changeToggle(value: EventSearchType){
     this._getTableList();
+  }
+
+  getProcessState(resDto: EventManagementResDto): string{
+    const eventStartDateTime = DateTime.fromFormat(resDto.eventStartDateTime,"yyyy-MM-dd'T'HH:mm:ss");
+    const eventEndDateTime = DateTime.fromFormat(resDto.eventEndDateTime,"yyyy-MM-dd'T'HH:mm:ss");
+
+    if(eventStartDateTime.diffNow("seconds").seconds < 0
+       && eventEndDateTime.diffNow("seconds").seconds > 0){
+      return "진행중"
+    }else if(eventStartDateTime.diffNow("seconds").seconds > 0){
+      return "진행전"
+    }else if(eventEndDateTime.diffNow("seconds").seconds < 0){
+      return "완료"
+    } else {
+      return "??"
+    }
   }
 
 }

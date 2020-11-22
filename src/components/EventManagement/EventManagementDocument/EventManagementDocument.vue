@@ -94,7 +94,7 @@
         </CustomTextFieldDateTimePicker>
       </div>
       <div class="ml-4 mt-4 mr-4 mb-8">
-        <GoogleMap id="googleMap" ref="googleMap" @changeCurrentAddress="changeCurrentAddress">
+        <GoogleMap id="googleMap" ref="googleMap" @changeCurrentAddress="changeCurrentAddress" @mapLoaded="mapLoaded">
 
         </GoogleMap>
       </div>
@@ -107,11 +107,15 @@
         </v-text-field>
       </div>
       <div class="d-flex" id="imagePanel">
-        <ImageUploaderFileComponent ref="listThumbnailImage" class="ma-4" label="리스트 썸네일" placeholder="파일 업로드" id="listThumbnailImage">
+        <ImageUploaderFileComponent ref="listThumbnailImage" class="ma-4"
+                                    :previewImageUrl="preListThumbnailImage"
+                                    label="리스트 썸네일" placeholder="파일 업로드" id="listThumbnailImage">
 
         </ImageUploaderFileComponent>
 
-        <ImageUploaderFileComponent ref="detailThumbnailImage" class="ma-4"  label="상세 썸네일" placeholder="파일 업로드" id="detailThumbnailImage">
+        <ImageUploaderFileComponent ref="detailThumbnailImage" class="ma-4"
+                                    :previewImageUrl="preDetailThumbnailImage"
+                                    label="상세 썸네일" placeholder="파일 업로드" id="detailThumbnailImage">
 
         </ImageUploaderFileComponent>
       </div>
@@ -124,13 +128,16 @@
         </QuillBasicEditor>
       </div>
       <div>
-        <SingleFileUpload ref="webViewUpload" class="ma-4" id="WebViewUpload" label="웹뷰파일">
+        <SingleFileUpload ref="webViewUpload" class="ma-4" id="WebViewUpload" label="웹뷰파일"
+                          :preDownLoadFile="preWebViewDownLoadFile">
 
         </SingleFileUpload>
       </div>
 
     </v-form>
+    <DocumentConfirmDialog ref="confirmDialog" @confirm="onConfirm">
 
+    </DocumentConfirmDialog>
   </div>
 </template>
 
@@ -159,6 +166,10 @@ import EventManagementUseCaseInputPort
 import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 import EventManagementInsertReqDto from "@/ManagerBis/EventManagement/Dto/EventManagementInsertReqDto";
+// eslint-disable-next-line no-unused-vars
+import DocumentConfirmDialogInputPort from "@/components/DocumentDialog/DocumentConfirmDialogInputPort";
+import CustomLatLng from "@/ManagerBis/Common/CustomLatLng";
+import EventManagementUpdateReqDto from "@/ManagerBis/EventManagement/Dto/EventManagementUpdateReqDto";
 @Component({
   components: {
     DocumentDeleteBtn,
@@ -188,6 +199,9 @@ export default class EventManagementDocument extends Vue {
   @Ref("webViewUpload")
   webViewUpload!: SingleFileUploadInputPort;
 
+  @Ref("confirmDialog")
+  confirmDialog!: DocumentConfirmDialogInputPort;
+
   category = EventCategoryType.DEFAULT;
 
   title = "";
@@ -208,15 +222,24 @@ export default class EventManagementDocument extends Vue {
 
   replyAllowFlag = true;
 
-  eventStartDateTime = ""
+  eventStartDateTime = "";
 
-  eventEndDateTime = ""
+  eventEndDateTime = "";
 
-  detailAddress = ""
+  detailAddress = "";
 
-  detailContent = ""
+  detailContent = "";
+
+  preWebViewDownLoadFile = "";
+
+  preListThumbnailImage = "";
+
+  preDetailThumbnailImage = "";
+
+  initMarkerPosition?: CustomLatLng;
 
   _eventManagementUseCaseInputPort!: EventManagementUseCaseInputPort;
+
 
   created(){
     this.eventStartDateTime = DateTime.local().toFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -224,6 +247,11 @@ export default class EventManagementDocument extends Vue {
     this._eventManagementUseCaseInputPort = myContainer.get<EventManagementUseCaseInputPort>(TYPES.EventManagementUseCaseInputPort);
   }
 
+  async mounted(){
+    if(!this.isInsertMode()){
+      await this._loadDocument();
+    }
+  }
 
   isInsertMode() {
     return isNaN(this.idx);
@@ -231,6 +259,37 @@ export default class EventManagementDocument extends Vue {
 
   async insertConfirm() {
     const reqDto = new EventManagementInsertReqDto();
+    this.setDataReqDto(reqDto);
+
+    const eventManagementResDto = await this._eventManagementUseCaseInputPort.insert(reqDto);
+
+    await this.updateListThumbnailImage(eventManagementResDto.idx);
+
+    await this.updateDetailThumbnailImage(eventManagementResDto.idx);
+
+    await this.updateWebViewFile(eventManagementResDto.idx);
+
+    this.confirmDialog.openDialog("등록 되었습니다.");
+
+  }
+
+  async modifyConfirm() {
+    const reqDto = new EventManagementUpdateReqDto(this.idx);
+    this.setDataReqDto(reqDto);
+
+    const eventManagementResDto = await this._eventManagementUseCaseInputPort.update(reqDto);
+
+    await this.updateListThumbnailImage(eventManagementResDto.idx);
+
+    await this.updateDetailThumbnailImage(eventManagementResDto.idx);
+
+    await this.updateWebViewFile(eventManagementResDto.idx);
+
+    this.confirmDialog.openDialog("수정 되었습니다.");
+
+  }
+
+  setDataReqDto(reqDto: EventManagementInsertReqDto){
     reqDto.title = this.title;
     reqDto.allowComments = this.replyAllowFlag;
     reqDto.isOpen = this.openFlag;
@@ -240,24 +299,87 @@ export default class EventManagementDocument extends Vue {
     reqDto.eventStartDateTime = this.eventStartDateTime;
     reqDto.eventStartPositionLng =  this.googleMap.getCurrentLatLng().lng();
     reqDto.eventStartPositionLat =  this.googleMap.getCurrentLatLng().lat();
+    reqDto.detailAddress = this.detailAddress;
     reqDto.subTitle = this.subTitle
-    await this._eventManagementUseCaseInputPort.insert(reqDto)
-
-
   }
 
-  modifyConfirm() {
-
+  async deleteConfirm() {
+    await this._eventManagementUseCaseInputPort.delete(this.idx);
+    this.confirmDialog.openDialog("삭제 되었습니다.");
   }
 
-  deleteConfirm() {
+  async updateListThumbnailImage(eventIdx: number): Promise<void>{
+    if(this.listThumbnailImage.hasFile()){
+      const listThumbnailImageFile = this.listThumbnailImage.getFile();
+      if(listThumbnailImageFile!= undefined){
+        await this._eventManagementUseCaseInputPort.uploadListThumbnailImage(listThumbnailImageFile,eventIdx);
+      }
+    }else if(this.listThumbnailImage.imageUrl == undefined || this.listThumbnailImage.imageUrl.length == 0){
+      await this._eventManagementUseCaseInputPort.uploadListThumbnailImage(null,eventIdx);
+    }
+  }
 
+  async updateDetailThumbnailImage(eventIdx: number): Promise<void>{
+    if(this.detailThumbnailImage.hasFile()){
+      const detailThumbnailImage = this.detailThumbnailImage.getFile();
+      if(detailThumbnailImage!= undefined){
+        await this._eventManagementUseCaseInputPort.uploadDetailPageThumbnail(detailThumbnailImage,eventIdx);
+      }
+    }else if(this.detailThumbnailImage.imageUrl == undefined || this.detailThumbnailImage.imageUrl.length == 0){
+      await this._eventManagementUseCaseInputPort.uploadDetailPageThumbnail(null,eventIdx);
+    }
+  }
+
+  async updateWebViewFile(eventIdx: number) {
+    if(this.webViewUpload.hasFile()){
+      const webViewFile = this.webViewUpload.getFile();
+      if(webViewFile!= undefined){
+        await this._eventManagementUseCaseInputPort.uploadWebViewArea(webViewFile,eventIdx);
+      }
+    } else if(this.webViewUpload.downLoadFile == undefined || this.webViewUpload.downLoadFile.length == 0){
+      await this._eventManagementUseCaseInputPort.uploadWebViewArea(null,eventIdx);
+    }
+  }
+
+  onConfirm() {
+    this.$router.back();
   }
 
   changeCurrentAddress(address: string){
     this.detailAddress = address;
   }
 
+  async _loadDocument(){
+    const resDto = await this._eventManagementUseCaseInputPort.getIdx(this.idx);
+    this.category = resDto.category;
+    this.title = resDto.title;
+    this.subTitle = resDto.subTitle;
+    this.openFlag =resDto.isOpen;
+    this.replyAllowFlag = resDto.allowComments;
+    this.eventStartDateTime = resDto.eventStartDateTime;
+    this.eventEndDateTime = resDto.eventEndDateTime;
+    this.detailContent = resDto.detailedDescription;
+    this.preListThumbnailImage = resDto.listThumbnail;
+    this.preDetailThumbnailImage = resDto.detailPageThumbnail;
+    this.preWebViewDownLoadFile = resDto.webViewArea;
+
+    const initMarker = new CustomLatLng(resDto.eventStartPositionLat,resDto.eventStarPositionLng);
+    this.initMarkerPosition = initMarker;
+    this._loadInitMarker()
+
+    this.detailAddress = resDto.detailAddress;
+
+
+
+  }
+
+  _loadInitMarker() {
+    this.googleMap.initMarker(this.initMarkerPosition);
+  }
+
+  mapLoaded(){
+    this._loadInitMarker();
+  }
 }
 </script>
 

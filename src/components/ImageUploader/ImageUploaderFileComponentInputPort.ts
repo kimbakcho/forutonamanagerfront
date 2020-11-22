@@ -4,4 +4,5 @@ export default  interface ImageUploaderFileComponentInputPort{
     hasFile(): boolean;
     deleteFlag: boolean;
     deleteFileUrl?: string;
+    imageUrl?: string;
 }

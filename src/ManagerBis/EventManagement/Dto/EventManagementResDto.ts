@@ -13,6 +13,7 @@ export default class EventManagementResDto {
     views!: number;
     eventStartPositionLat!: number;
     eventStarPositionLng!: number;
+    detailAddress!: string;
     listThumbnail!: string;
     detailPageThumbnail!: string;
     detailedDescription!: string;

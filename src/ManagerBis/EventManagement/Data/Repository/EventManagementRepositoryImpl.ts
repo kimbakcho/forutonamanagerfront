@@ -12,6 +12,15 @@ import EventManagementUpdateReqDto from "@/ManagerBis/EventManagement/Dto/EventM
 
 @injectable()
 export default class EventManagementRepositoryImpl implements EventManagementRepository {
+    async findById(idx: number): Promise<EventManagementResDto> {
+        const response = await axios.get<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement/idx`,{
+            params:{
+                "idx": idx
+            }
+        });
+        return response.data;
+    }
+
     async save(reqDto: EventManagementInsertReqDto): Promise<EventManagementResDto> {
         const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement`, reqDto);
         return plainToClass(EventManagementResDto, response.data)
@@ -43,15 +52,51 @@ export default class EventManagementRepositoryImpl implements EventManagementRep
         return plainToClass(EventManagementResDto, response.data)
     }
 
-    async uploadListThumbnailImage(imageFile: File): Promise<EventManagementResDto> {
+    async uploadListThumbnailImage(imageFile: File,eventIdx: number): Promise<EventManagementResDto> {
         const formData = new FormData();
         formData.append("listThumbnail", imageFile);
-        const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/listThumbnail`, formData,
+        const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement/listThumbnail`, formData,
             {
+                params:{
+                    "eventIdx": eventIdx
+                },
                 headers: {"Content-Type": "multipart/form-data"}
             }
         );
         return plainToClass(EventManagementResDto,response.data);
     }
+
+    async uploadDetailPageThumbnail(imageFile: File,eventIdx: number): Promise<EventManagementResDto> {
+        const formData = new FormData();
+        formData.append("detailPageThumbnail", imageFile);
+        formData.append("eventIdx",String(eventIdx));
+        const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement/detailPageThumbnail`, formData,
+            {
+                params:{
+                    "eventIdx": eventIdx
+                },
+                headers: {"Content-Type": "multipart/form-data"}
+            }
+        );
+        return plainToClass(EventManagementResDto,response.data);
+    }
+
+    async uploadWebViewArea(webViewFile: File,eventIdx: number): Promise<EventManagementResDto> {
+        const formData = new FormData();
+        formData.append("webViewArea", webViewFile);
+        formData.append("eventIdx",String(eventIdx));
+        const response = await axios.post<EventManagementResDto>(`${Preference.backEndUrl}/eventManagement/webViewArea`, formData,
+            {
+                params:{
+                    "eventIdx": eventIdx
+                },
+                headers: {"Content-Type": "multipart/form-data"}
+            }
+        );
+        return plainToClass(EventManagementResDto,response.data);
+    }
+
+
+
 
 }

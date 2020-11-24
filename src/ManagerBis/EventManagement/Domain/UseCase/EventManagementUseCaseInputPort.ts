@@ -13,9 +13,9 @@ export default interface EventManagementUseCaseInputPort {
     get(eventSearchType: EventSearchType,pageable: Pageable): Promise<PageWrap<EventManagementResDto>>;
     delete(idx: number): Promise<void>;
     update(reqDto: EventManagementUpdateReqDto): Promise<EventManagementResDto>;
-    uploadListThumbnailImage(imageFile :File,eventIdx: number): Promise<EventManagementResDto>;
-    uploadDetailPageThumbnail(imageFile: File,eventIdx: number): Promise<EventManagementResDto>;
-    uploadWebViewArea(webViewFile: File,eventIdx: number): Promise<EventManagementResDto>;
+    uploadListThumbnailImage(imageFile :File | null,eventIdx: number): Promise<EventManagementResDto>;
+    uploadDetailPageThumbnail(imageFile: File | null,eventIdx: number): Promise<EventManagementResDto>;
+    uploadWebViewArea(webViewFile: File | null,eventIdx: number): Promise<EventManagementResDto>;
     getIdx(idx: number):Promise<EventManagementResDto>;
 }
 

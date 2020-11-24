@@ -71,6 +71,10 @@ export default class NoticeListTable extends Vue {
     itemsPerPage: 10,
     sortBy: ["modifyDate"],
     sortDesc: [true],
+    mustSort: false,
+    multiSort: false,
+    groupDesc: [],
+    groupBy: []
   }
 
   serverItemsLength = 0;

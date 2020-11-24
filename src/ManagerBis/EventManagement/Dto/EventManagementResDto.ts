@@ -12,7 +12,7 @@ export default class EventManagementResDto {
     eventEndDateTime!: string;
     views!: number;
     eventStartPositionLat!: number;
-    eventStarPositionLng!: number;
+    eventStartPositionLng!: number;
     detailAddress!: string;
     listThumbnail!: string;
     detailPageThumbnail!: string;

@@ -363,7 +363,7 @@ export default class EventManagementDocument extends Vue {
     this.preDetailThumbnailImage = resDto.detailPageThumbnail;
     this.preWebViewDownLoadFile = resDto.webViewArea;
 
-    const initMarker = new CustomLatLng(resDto.eventStartPositionLat,resDto.eventStarPositionLng);
+    const initMarker = new CustomLatLng(resDto.eventStartPositionLat,resDto.eventStartPositionLng);
     this.initMarkerPosition = initMarker;
     this._loadInitMarker()
 

@@ -12,4 +12,5 @@ export default class EventManagementInsertReqDto {
     eventStartPositionLng!: number;
     detailedDescription!: string;
     detailAddress!: string;
+
 }

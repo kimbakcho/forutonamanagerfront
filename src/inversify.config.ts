@@ -27,6 +27,14 @@ import EventManagementUseCaseInputPort
     , {EventManagementUseCase} from "@/ManagerBis/EventManagement/Domain/UseCase/EventManagementUseCaseInputPort";
 import EventManagementListTableStatue
     from "@/components/EventManagement/EventManagementListTable/EventManagementListTableStatue";
+import MaliciousBallRepository from "@/ManagerBis/MaliciousBall/Domain/Repository/MaliciousBallRepository";
+import MaliciousBallRepositoryImpl from "@/ManagerBis/MaliciousBall/Data/Repository/MaliciousBallRepositoryImpl";
+import MaliciousBallUseCaseInputPort, {MaliciousBallUseCase} from "@/ManagerBis/MaliciousBall/Domain/UseCase/MaliciousBallUseCaseInputPort";
+import FBallRepository from "@/ManagerBis/FBall/Domain/Repository/FBallRepository";
+import FBallRepositoryImpl from "@/ManagerBis/FBall/Data/FBallRepositoryImpl";
+import FBallUseCaseInputPort, {FBallUseCase} from "@/ManagerBis/FBall/Domain/UseCase/FBallUseCaseInputPort";
+import MaliciousBallPageListTableStatue
+    from "@/components/MaliciousBall/MaliciousBallPageListTable/MaliciousBallPageListTableStatue";
 
 
 const myContainer = new Container();
@@ -44,4 +52,9 @@ myContainer.bind<NoticeUseCaseInputPort>(TYPES.NoticeUseCaseInputPort).to(Notice
 myContainer.bind<EventManagementRepository>(TYPES.EventManagementRepository).to(EventManagementRepositoryImpl).inSingletonScope();
 myContainer.bind<EventManagementUseCaseInputPort>(TYPES.EventManagementUseCaseInputPort).to(EventManagementUseCase).inSingletonScope();
 myContainer.bind<EventManagementListTableStatue>(TYPES.EventManagementListTableStatue).to(EventManagementListTableStatue).inSingletonScope();
+myContainer.bind<MaliciousBallRepository>(TYPES.MaliciousBallRepository).to(MaliciousBallRepositoryImpl).inSingletonScope();
+myContainer.bind<MaliciousBallUseCaseInputPort>(TYPES.MaliciousBallUseCaseInputPort).to(MaliciousBallUseCase).inSingletonScope();
+myContainer.bind<FBallRepository>(TYPES.FBallRepository).to(FBallRepositoryImpl).inSingletonScope();
+myContainer.bind<FBallUseCaseInputPort>(TYPES.FBallUseCaseInputPort).to(FBallUseCase).inSingletonScope();
+myContainer.bind<MaliciousBallPageListTableStatue>(TYPES.MaliciousBallPageListTableStatue).to(MaliciousBallPageListTableStatue).inSingletonScope();
 export default myContainer;

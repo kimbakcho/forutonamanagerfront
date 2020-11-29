@@ -11,6 +11,11 @@ const TYPES = {
     NoticeUseCaseInputPort: Symbol.for("NoticeUseCaseInputPort"),
     EventManagementRepository: Symbol.for("EventManagementRepository"),
     EventManagementUseCaseInputPort: Symbol.for("EventManagementUseCaseInputPort"),
-    EventManagementListTableStatue: Symbol.for("EventManagementListTableStatue")
+    EventManagementListTableStatue: Symbol.for("EventManagementListTableStatue"),
+    MaliciousBallRepository: Symbol.for("MaliciousBallRepository"),
+    MaliciousBallUseCaseInputPort: Symbol.for("MaliciousBallUseCaseInputPort"),
+    FBallRepository: Symbol.for("FBallRepository"),
+    FBallUseCaseInputPort: Symbol.for("FBallUseCaseInputPort"),
+    MaliciousBallPageListTableStatue: Symbol.for("MaliciousBallPageListTableStatue")
 }
 export default TYPES;

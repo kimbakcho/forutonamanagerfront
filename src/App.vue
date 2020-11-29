@@ -35,6 +35,17 @@
             prepend-icon="mdi-presentation"
         >
           <template v-slot:activator>
+            <v-list-item-title>신고 관리</v-list-item-title>
+          </template>
+          <v-list-item link to="/MaliciousBall/Page">
+            <v-list-item-title v-text="'Ball 신고 관리'"></v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group
+            :value="false"
+            prepend-icon="mdi-presentation"
+        >
+          <template v-slot:activator>
             <v-list-item-title>약관 및 정책</v-list-item-title>
           </template>
 

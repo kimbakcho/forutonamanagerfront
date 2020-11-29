@@ -9,6 +9,8 @@ import NoticeDocument from "@/components/Notice/NoticeDocument/NoticeDocument.vu
 import EventManagementView from "@/views/EventManagementView.vue";
 import EventManagementPage from "@/components/EventManagement/EventManagementPage.vue";
 import EventManagementDocument from "@/components/EventManagement/EventManagementDocument/EventManagementDocument.vue";
+import MaliciousBallView from "@/views/MaliciousBallView.vue";
+import MaliciousBallPage from "@/components/MaliciousBall/MaliciousBallPage.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -60,6 +62,18 @@ const routes: Array<RouteConfig> = [
                     "idx":Number(router.query.idx)
                 })
             }
+        ]
+    },
+    {
+        path:"/MaliciousBall",
+        name:"MaliciousBall",
+        component: MaliciousBallView,
+        children:[
+            {
+                path: "Page",
+                name: "MaliciousBallPage1",
+                component: MaliciousBallPage
+            },
         ]
     },
     {

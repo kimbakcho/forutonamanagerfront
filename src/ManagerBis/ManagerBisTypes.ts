@@ -16,6 +16,7 @@ const TYPES = {
     MaliciousBallUseCaseInputPort: Symbol.for("MaliciousBallUseCaseInputPort"),
     FBallRepository: Symbol.for("FBallRepository"),
     FBallUseCaseInputPort: Symbol.for("FBallUseCaseInputPort"),
-    MaliciousBallPageListTableStatue: Symbol.for("MaliciousBallPageListTableStatue")
+    MaliciousBallPageListTableStatue: Symbol.for("MaliciousBallPageListTableStatue"),
+    FBallDescriptionConverterInputPort: Symbol.for("FBallDescriptionConverterInputPort")
 }
 export default TYPES;

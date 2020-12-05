@@ -1,4 +1,4 @@
-import {MaliciousBallSearchType} from "@/ManagerBis/MaliciousBall/Domain/Value/MaliciousBallSearchType";
+import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
 import {DataOptions} from "vuetify";
 import {injectable} from "inversify";
 

@@ -30,7 +30,7 @@ import MaliciousBallPageListTableStatue
 import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 // eslint-disable-next-line no-unused-vars
-import {MaliciousBallSearchType} from "@/ManagerBis/MaliciousBall/Domain/Value/MaliciousBallSearchType";
+import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
 
 
 @Component

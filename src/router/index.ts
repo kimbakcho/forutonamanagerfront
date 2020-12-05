@@ -11,6 +11,7 @@ import EventManagementPage from "@/components/EventManagement/EventManagementPag
 import EventManagementDocument from "@/components/EventManagement/EventManagementDocument/EventManagementDocument.vue";
 import MaliciousBallView from "@/views/MaliciousBallView.vue";
 import MaliciousBallPage from "@/components/MaliciousBall/MaliciousBallPage.vue";
+import MaliciousBallDetailPage from "@/components/MaliciousBall/MaliciousBallDetailPage/MaliciousBallDetailPage.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -74,6 +75,14 @@ const routes: Array<RouteConfig> = [
                 name: "MaliciousBallPage1",
                 component: MaliciousBallPage
             },
+            {
+                path: "Detail",
+                name: "MaliciousBallDetailPage",
+                component: MaliciousBallDetailPage,
+                props: (router)=>({
+                    "idx":Number(router.query.idx)
+                })
+            }
         ]
     },
     {

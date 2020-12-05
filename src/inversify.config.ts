@@ -27,14 +27,15 @@ import EventManagementUseCaseInputPort
     , {EventManagementUseCase} from "@/ManagerBis/EventManagement/Domain/UseCase/EventManagementUseCaseInputPort";
 import EventManagementListTableStatue
     from "@/components/EventManagement/EventManagementListTable/EventManagementListTableStatue";
-import MaliciousBallRepository from "@/ManagerBis/MaliciousBall/Domain/Repository/MaliciousBallRepository";
-import MaliciousBallRepositoryImpl from "@/ManagerBis/MaliciousBall/Data/Repository/MaliciousBallRepositoryImpl";
-import MaliciousBallUseCaseInputPort, {MaliciousBallUseCase} from "@/ManagerBis/MaliciousBall/Domain/UseCase/MaliciousBallUseCaseInputPort";
+import MaliciousBallRepository from "@/ManagerBis/Malicious/Domain/Repository/Ball/MaliciousBallRepository";
+import MaliciousBallRepositoryImpl from "@/ManagerBis/Malicious/Data/Repository/Ball/MaliciousBallRepositoryImpl";
+import MaliciousBallUseCaseInputPort, {MaliciousBallUseCase} from "@/ManagerBis/Malicious/Domain/UseCase/Ball/MaliciousBallUseCaseInputPort";
 import FBallRepository from "@/ManagerBis/FBall/Domain/Repository/FBallRepository";
 import FBallRepositoryImpl from "@/ManagerBis/FBall/Data/FBallRepositoryImpl";
 import FBallUseCaseInputPort, {FBallUseCase} from "@/ManagerBis/FBall/Domain/UseCase/FBallUseCaseInputPort";
 import MaliciousBallPageListTableStatue
     from "@/components/MaliciousBall/MaliciousBallPageListTable/MaliciousBallPageListTableStatue";
+import FBallDescriptionConverterInputPort, {FBallDescriptionConverter} from "@/ManagerBis/FBall/Domain/UseCase/FBallDescriptionConverterInputPort";
 
 
 const myContainer = new Container();
@@ -57,4 +58,5 @@ myContainer.bind<MaliciousBallUseCaseInputPort>(TYPES.MaliciousBallUseCaseInputP
 myContainer.bind<FBallRepository>(TYPES.FBallRepository).to(FBallRepositoryImpl).inSingletonScope();
 myContainer.bind<FBallUseCaseInputPort>(TYPES.FBallUseCaseInputPort).to(FBallUseCase).inSingletonScope();
 myContainer.bind<MaliciousBallPageListTableStatue>(TYPES.MaliciousBallPageListTableStatue).to(MaliciousBallPageListTableStatue).inSingletonScope();
+myContainer.bind<FBallDescriptionConverterInputPort>(TYPES.FBallDescriptionConverterInputPort).to(FBallDescriptionConverter);
 export default myContainer;

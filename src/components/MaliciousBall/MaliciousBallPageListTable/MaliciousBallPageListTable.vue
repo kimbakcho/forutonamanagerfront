@@ -1,7 +1,9 @@
 <template>
   <div>
     <div>
-      <MaliciousBallPageListTableToggleBtn :key="_maliciousBallPageListTableStatue.beforeJudgementCount">
+      <MaliciousBallPageListTableToggleBtn
+          :key="_maliciousBallPageListTableStatue.beforeJudgementCount"
+          @changeToggle="getTableList()">
 
       </MaliciousBallPageListTableToggleBtn>
     </div>
@@ -11,9 +13,13 @@
           :items="maliciousBallResDtos"
           :server-items-length="getServerItemsLength()"
           :options.sync="_maliciousBallPageListTableStatue.dataOptions"
-          @update:options="_getTableList"
+          @update:options="getTableList"
       >
-
+        <template v-slot:item.ballName="{ item }">
+          <router-link :to="getDetailPageLink(item)" >
+            {{ item.ballName }}
+          </router-link>
+        </template>
       </v-data-table>
 
     </div>
@@ -25,7 +31,7 @@ import {Component, Vue} from "vue-property-decorator";
 import MaliciousBallPageListTableToggleBtn
   from "@/components/MaliciousBall/MaliciousBallPageListTable/MaliciousBallPageListTableToggleBtn.vue";
 // eslint-disable-next-line no-unused-vars
-import MaliciousBallUseCaseInputPort from "@/ManagerBis/MaliciousBall/Domain/UseCase/MaliciousBallUseCaseInputPort";
+import MaliciousBallUseCaseInputPort from "@/ManagerBis/Malicious/Domain/UseCase/Ball/MaliciousBallUseCaseInputPort";
 import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 // eslint-disable-next-line no-unused-vars
@@ -35,7 +41,8 @@ import MaliciousBallPageListTableStatue
   from "@/components/MaliciousBall/MaliciousBallPageListTable/MaliciousBallPageListTableStatue";
 import Pageable from "@/ManagerBis/Common/Pageable";
 // eslint-disable-next-line no-unused-vars
-import MaliciousBallResDto from "@/ManagerBis/MaliciousBall/Dto/MaliciousBallResDto";
+import MaliciousBallResDto from "@/ManagerBis/Malicious/Dto/MaliciousBallResDto";
+import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
 
 @Component(
     {
@@ -98,9 +105,9 @@ export default class MaliciousBallPageListTable extends Vue {
   }
 
   mounted(){
-    this._getTableList();
+    this.getTableList();
   }
-  async _getTableList(): Promise<void>{
+  private async getTableList(): Promise<void>{
     const dataOptions = this._maliciousBallPageListTableStatue.dataOptions;
     if(dataOptions == undefined){
       return ;
@@ -111,15 +118,23 @@ export default class MaliciousBallPageListTable extends Vue {
     if(dataOptions.sortBy.length > 0){
       pageable.setSort(dataOptions.sortBy[0],dataOptions.sortDesc[0]);
     }
-    const pageWrap = await this._maliciousBallUseCaseInputPort.getPage(this._maliciousBallPageListTableStatue.searchType,pageable);
+    const pageWrap = await this._maliciousBallUseCaseInputPort
+        .getPage(this._maliciousBallPageListTableStatue.searchType,pageable);
     this.maliciousBallResDtos = pageWrap.content;
     this._maliciousBallPageListTableStatue.serverItemsLength = pageWrap.totalElements;
-    this._maliciousBallPageListTableStatue.beforeJudgementCount = pageWrap.totalElements;
+    if(this._maliciousBallPageListTableStatue.searchType == MaliciousBallSearchType.BEFORE_JUDGMENT){
+      this._maliciousBallPageListTableStatue.beforeJudgementCount = pageWrap.totalElements;
+    }
     this.$forceUpdate();
 
   }
   getServerItemsLength() {
     return  this._maliciousBallPageListTableStatue.serverItemsLength;
+  }
+
+
+  getDetailPageLink(item: MaliciousBallResDto) {
+    return `Detail?idx=${item.idx}`
   }
 
 }

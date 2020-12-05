@@ -1,16 +1,16 @@
-import {MaliciousBallSearchType} from "@/ManagerBis/MaliciousBall/Domain/Value/MaliciousBallSearchType";
+import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
 import Pageable from "@/ManagerBis/Common/Pageable";
 import PageWrap from "@/ManagerBis/Common/PageWrap";
-import MaliciousBallResDto from "@/ManagerBis/MaliciousBall/Dto/MaliciousBallResDto";
-import {MaliciousJudgementType} from "@/ManagerBis/MaliciousBall/Domain/Value/MaliciousJudgementType";
+import MaliciousBallResDto from "@/ManagerBis/Malicious/Dto/MaliciousBallResDto";
+import {MaliciousJudgementType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousJudgementType";
 import {inject, injectable} from "inversify";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
-import MaliciousBallRepository from "@/ManagerBis/MaliciousBall/Domain/Repository/MaliciousBallRepository";
+import MaliciousBallRepository from "@/ManagerBis/Malicious/Domain/Repository/Ball/MaliciousBallRepository";
 
 export default interface MaliciousBallUseCaseInputPort {
     getPage(searchType: MaliciousBallSearchType,pageable: Pageable): Promise<PageWrap<MaliciousBallResDto>>;
-    getMaliciousBall(idx: number): Promise<MaliciousBallResDto>;
-    updateJudgement(idx: number,maliciousJudgementType: MaliciousJudgementType): Promise<MaliciousBallResDto>;
+    getMaliciousBall(idx: Number): Promise<MaliciousBallResDto>;
+    updateJudgement(idx: Number,maliciousJudgementType: MaliciousJudgementType): Promise<MaliciousBallResDto>;
 }
 
 @injectable()

@@ -17,6 +17,13 @@ const TYPES = {
     FBallRepository: Symbol.for("FBallRepository"),
     FBallUseCaseInputPort: Symbol.for("FBallUseCaseInputPort"),
     MaliciousBallPageListTableStatue: Symbol.for("MaliciousBallPageListTableStatue"),
-    FBallDescriptionConverterInputPort: Symbol.for("FBallDescriptionConverterInputPort")
+    FBallDescriptionConverterInputPort: Symbol.for("FBallDescriptionConverterInputPort"),
+    MaliciousBallJudgementUseCaseFactory: Symbol.for("MaliciousBallJudgementUseCaseFactory"),
+    MaliciousProfileRepository: Symbol.for("MaliciousProfileRepository"),
+    MaliciousProfileUseCaseInputPort: Symbol.for("MaliciousProfileUseCaseInputPort"),
+    MaliciousProfileJudgementUseCaseFactory: Symbol.for("MaliciousProfileJudgementUseCaseFactory"),
+    MaliciousProfilePageListTableStatue: Symbol.for("MaliciousProfilePageListTableStatue"),
+    FUserInfoRepository: Symbol.for("FUserInfoRepository"),
+    FUserInfoUseCaseInputPort: Symbol.for("FUserInfoUseCaseInputPort")
 }
 export default TYPES;

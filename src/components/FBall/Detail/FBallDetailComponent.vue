@@ -57,7 +57,8 @@ import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 // eslint-disable-next-line no-unused-vars
 import FBallResDto from "@/ManagerBis/FBall/Dto/FBallResDto";
-import FBallDescription from "@/ManagerBis/FBall/Dto/FBallDescription";
+// eslint-disable-next-line no-unused-vars
+import FBallDescription, {DesImage} from "@/ManagerBis/FBall/Dto/FBallDescription";
 // eslint-disable-next-line no-unused-vars
 import FBallDescriptionConverterInputPort from "@/ManagerBis/FBall/Domain/UseCase/FBallDescriptionConverterInputPort";
 
@@ -90,6 +91,7 @@ export default class FBallDetailComponent extends Vue {
     this.fBallDescription = this._fBallDescriptionConverterInputPort.getDescription(this.fBallResDto);
     this.initLoad = true
   }
+
 
   get ballName(): String{
     return this.fBallResDto.ballName;

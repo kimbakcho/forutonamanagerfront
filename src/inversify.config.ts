@@ -33,9 +33,22 @@ import MaliciousBallUseCaseInputPort, {MaliciousBallUseCase} from "@/ManagerBis/
 import FBallRepository from "@/ManagerBis/FBall/Domain/Repository/FBallRepository";
 import FBallRepositoryImpl from "@/ManagerBis/FBall/Data/FBallRepositoryImpl";
 import FBallUseCaseInputPort, {FBallUseCase} from "@/ManagerBis/FBall/Domain/UseCase/FBallUseCaseInputPort";
-import MaliciousBallPageListTableStatue
-    from "@/components/MaliciousBall/MaliciousBallPageListTable/MaliciousBallPageListTableStatue";
+
 import FBallDescriptionConverterInputPort, {FBallDescriptionConverter} from "@/ManagerBis/FBall/Domain/UseCase/FBallDescriptionConverterInputPort";
+import MaliciousBallJudgementUseCaseFactory
+    from "@/ManagerBis/Malicious/Domain/UseCase/Ball/MaliciousBallJudgementUseCaseFactory";
+import MaliciousProfileRepository from "@/ManagerBis/Malicious/Domain/Repository/Profile/MaliciousProfileRepository";
+import MaliciousProfileRepositoryImpl
+    from "@/ManagerBis/Malicious/Data/Repository/Profile/MaliciousProfileRepositoryImpl";
+import MaliciousProfileUseCaseInputPort
+    , {MaliciousProfileUseCase} from "@/ManagerBis/Malicious/Domain/UseCase/Profile/MaliciousProfileUseCaseInputPort";
+import MaliciousProfileJudgementUseCaseFactory
+    from "@/ManagerBis/Malicious/Domain/UseCase/Profile/MaliciousProfileJudgementUseCaseFactory";
+
+import MaliciousPageListTableStatus from "@/components/Malicious/Table/MaliciousPageListTableStatus";
+import FUserInfoRepository from "@/ManagerBis/FUserInfo/Domain/Repository/FUserInfoRepository";
+import FUserInfoRepositoryImpl from "@/ManagerBis/FUserInfo/Data/Repository/FUserInfoRepositoryImpl";
+import FUserInfoUseCaseInputPort, {FUserInfoUseCase} from "@/ManagerBis/FUserInfo/Domain/UseCase/FUserInfoUseCaseInputPort";
 
 
 const myContainer = new Container();
@@ -57,6 +70,13 @@ myContainer.bind<MaliciousBallRepository>(TYPES.MaliciousBallRepository).to(Mali
 myContainer.bind<MaliciousBallUseCaseInputPort>(TYPES.MaliciousBallUseCaseInputPort).to(MaliciousBallUseCase).inSingletonScope();
 myContainer.bind<FBallRepository>(TYPES.FBallRepository).to(FBallRepositoryImpl).inSingletonScope();
 myContainer.bind<FBallUseCaseInputPort>(TYPES.FBallUseCaseInputPort).to(FBallUseCase).inSingletonScope();
-myContainer.bind<MaliciousBallPageListTableStatue>(TYPES.MaliciousBallPageListTableStatue).to(MaliciousBallPageListTableStatue).inSingletonScope();
+myContainer.bind<MaliciousPageListTableStatus>(TYPES.MaliciousBallPageListTableStatue).to(MaliciousPageListTableStatus).inSingletonScope();
 myContainer.bind<FBallDescriptionConverterInputPort>(TYPES.FBallDescriptionConverterInputPort).to(FBallDescriptionConverter);
+myContainer.bind<MaliciousBallJudgementUseCaseFactory>(TYPES.MaliciousBallJudgementUseCaseFactory).to(MaliciousBallJudgementUseCaseFactory);
+myContainer.bind<MaliciousProfileRepository>(TYPES.MaliciousProfileRepository).to(MaliciousProfileRepositoryImpl).inSingletonScope();
+myContainer.bind<MaliciousProfileUseCaseInputPort>(TYPES.MaliciousProfileUseCaseInputPort).to(MaliciousProfileUseCase).inSingletonScope();
+myContainer.bind<MaliciousProfileJudgementUseCaseFactory>(TYPES.MaliciousProfileJudgementUseCaseFactory).to(MaliciousProfileJudgementUseCaseFactory);
+myContainer.bind<MaliciousPageListTableStatus>(TYPES.MaliciousProfilePageListTableStatue).to(MaliciousPageListTableStatus).inSingletonScope();
+myContainer.bind<FUserInfoRepository>(TYPES.FUserInfoRepository).to(FUserInfoRepositoryImpl).inSingletonScope();
+myContainer.bind<FUserInfoUseCaseInputPort>(TYPES.FUserInfoUseCaseInputPort).to(FUserInfoUseCase).inSingletonScope();
 export default myContainer;

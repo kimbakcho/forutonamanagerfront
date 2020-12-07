@@ -1,10 +1,10 @@
-import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
+import {MaliciousSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousSearchType";
 import {DataOptions} from "vuetify";
 import {injectable} from "inversify";
 
 @injectable()
-export default class MaliciousBallPageListTableStatue {
-    searchType = MaliciousBallSearchType.BEFORE_JUDGMENT
+export default class MaliciousPageListTableStatus {
+    searchType = MaliciousSearchType.BEFORE_JUDGMENT
     beforeJudgementCount: number = 0;
     dataOptions: DataOptions;
     serverItemsLength = 0;

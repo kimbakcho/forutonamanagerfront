@@ -29,20 +29,15 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
+
 // eslint-disable-next-line no-unused-vars
-import MaliciousBallUseCaseInputPort from "@/ManagerBis/Malicious/Domain/UseCase/Ball/MaliciousBallUseCaseInputPort";
-import myContainer from "@/inversify.config";
-import TYPES from "@/ManagerBis/ManagerBisTypes";
-// eslint-disable-next-line no-unused-vars
-import {MaliciousJudgementType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousJudgementType";
+import MaliciousJudgementUseCaseInputPort
+  from "@/ManagerBis/Malicious/Domain/UseCase/Judgement/MaliciousJudgementUseCaseInputPort";
 
 @Component
 export default class MaliciousJudgmentButton extends Vue {
   @Prop(Number)
   idx!: Number;
-
-  @Prop()
-  maliciousJudgementType!: MaliciousJudgementType;
 
   @Prop(String)
   dialogMessage!: String;
@@ -50,13 +45,11 @@ export default class MaliciousJudgmentButton extends Vue {
   @Prop(String)
   buttonMessage!: String
 
+  @Prop()
+  maliciousJudgementUseCaseInputPort!: MaliciousJudgementUseCaseInputPort<any>;
+
   dialog:Boolean = false;
 
-  maliciousBallUseCaseInputPort!:MaliciousBallUseCaseInputPort;
-
-  created(){
-    this.maliciousBallUseCaseInputPort = myContainer.get<MaliciousBallUseCaseInputPort>(TYPES.MaliciousBallUseCaseInputPort);
-  }
 
   async onJudgment(){
     this.dialog = true;
@@ -64,7 +57,7 @@ export default class MaliciousJudgmentButton extends Vue {
 
   async onJudgmentConfirm(){
     console.log("onJudgmentConfirm")
-    await this.maliciousBallUseCaseInputPort.updateJudgement(this.idx,this.maliciousJudgementType);
+    await this.maliciousJudgementUseCaseInputPort.judgement();
     this.dialog = false;
   }
   onJudgmentCancel(){

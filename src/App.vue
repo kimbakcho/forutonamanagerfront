@@ -40,6 +40,11 @@
           <v-list-item link to="/MaliciousBall/Page">
             <v-list-item-title v-text="'Ball 신고 관리'"></v-list-item-title>
           </v-list-item>
+          <v-list-item link to="/MaliciousProfile/Page">
+            <v-list-item-title v-text="'Profile 신고 관리'"></v-list-item-title>
+          </v-list-item>
+
+
         </v-list-group>
         <v-list-group
             :value="false"

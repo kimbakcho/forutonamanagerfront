@@ -7,18 +7,19 @@
           @changeToggle="getTableList()">
 
       </MaliciousPageListTableToggleBtn>
+
     </div>
     <div>
       <v-data-table
           :headers="headers"
-          :items="maliciousBallResDtos"
+          :items="maliciousProfilePageItemResDto"
           :server-items-length="getServerItemsLength()"
           :options.sync="maliciousPageListTableStatus.dataOptions"
           @update:options="getTableList"
       >
-        <template v-slot:item.ballName="{ item }">
+        <template v-slot:item.nickName="{ item }">
           <router-link :to="getDetailPageLink(item)" >
-            {{ item.ballName }}
+            {{ item.nickName }}
           </router-link>
         </template>
       </v-data-table>
@@ -29,34 +30,39 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import MaliciousPageListTableToggleBtn
-  from "@/components/Malicious/Table/MaliciousPageListTableToggleBtn.vue";
-// eslint-disable-next-line no-unused-vars
-import MaliciousBallUseCaseInputPort from "@/ManagerBis/Malicious/Domain/UseCase/Ball/MaliciousBallUseCaseInputPort";
+import MaliciousPageListTableToggleBtn from "@/components/Malicious/Table/MaliciousPageListTableToggleBtn.vue";
 import myContainer from "@/inversify.config";
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 // eslint-disable-next-line no-unused-vars
-import {DataTableHeader} from "vuetify";
+import MaliciousPageListTableStatus from "@/components/Malicious/Table/MaliciousPageListTableStatus";
+
+// eslint-disable-next-line no-unused-vars
+import MaliciousProfileUseCaseInputPort
+  from "@/ManagerBis/Malicious/Domain/UseCase/Profile/MaliciousProfileUseCaseInputPort";
+
+// eslint-disable-next-line no-unused-vars
+import MaliciousProfileResDto from "@/ManagerBis/Malicious/Dto/Profile/MaliciousProfileResDto";
 import Pageable from "@/ManagerBis/Common/Pageable";
 import {MaliciousSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousSearchType";
 // eslint-disable-next-line no-unused-vars
-import MaliciousPageListTableStatus from "@/components/Malicious/Table/MaliciousPageListTableStatus";
+import {DataTableHeader} from "vuetify";
 // eslint-disable-next-line no-unused-vars
-import MaliciousBallResDto from "@/ManagerBis/Malicious/Dto/Ball/MaliciousBallResDto";
-
+import MaliciousProfilePageItemResDto from "@/ManagerBis/Malicious/Dto/Profile/MaliciousProfilePageItemResDto";
 
 @Component(
     {
-      components:{
+      components: {
         MaliciousPageListTableToggleBtn: MaliciousPageListTableToggleBtn
       }
     }
 )
-export default class MaliciousBallPageListTable extends Vue {
+export default class MaliciousProfilePageListTable extends Vue {
 
-  private _maliciousBallUseCaseInputPort!: MaliciousBallUseCaseInputPort;
+  private maliciousProfileUseCaseInputPort!: MaliciousProfileUseCaseInputPort;
 
-  maliciousBallResDtos: MaliciousBallResDto[] = []
+  private maliciousPageListTableStatus!: MaliciousPageListTableStatus;
+
+  maliciousProfilePageItemResDto: MaliciousProfilePageItemResDto[] = []
 
   headers: DataTableHeader[] = [
     {
@@ -66,29 +72,24 @@ export default class MaliciousBallPageListTable extends Vue {
       sortable: true
     },
     {
-      text: "ball 고유번호",
-      value: "ballUuid",
+      text: "user 고유번호",
+      value: "userUid",
       width: "200",
     },
     {
-      text: "ball 제목",
-      value: "ballName",
+      text: "닉네임",
+      value: "nickName",
       width: "200",
     },
     {
-      text: "제작자",
-      value: "makerNickName",
+      text: "가입 날짜",
+      value: "joinTime",
       width: "100",
     },
     {
-      text: "Ball 등록일시",
-      value: "ballMakeTime",
+      text: "Flower Count",
+      value: "followerCount",
       width: "100",
-    },
-    {
-      text: "조회수",
-      value: "ballHits",
-      width: 100,
     },
     {
       text: "신고 횟수",
@@ -98,16 +99,14 @@ export default class MaliciousBallPageListTable extends Vue {
     }
   ]
 
-  private maliciousPageListTableStatus!: MaliciousPageListTableStatus;
-
   created(){
-    this._maliciousBallUseCaseInputPort = myContainer.get<MaliciousBallUseCaseInputPort>(TYPES.MaliciousBallUseCaseInputPort);
-    this.maliciousPageListTableStatus = myContainer.get<MaliciousPageListTableStatus>(TYPES.MaliciousBallPageListTableStatue);
+    this.maliciousProfileUseCaseInputPort = myContainer
+        .get<MaliciousProfileUseCaseInputPort>(TYPES.MaliciousProfileUseCaseInputPort);
+    this.maliciousPageListTableStatus = myContainer
+        .get<MaliciousPageListTableStatus>(TYPES.MaliciousProfilePageListTableStatue);
   }
 
-  mounted(){
-    this.getTableList();
-  }
+
   private async getTableList(): Promise<void>{
     const dataOptions = this.maliciousPageListTableStatus.dataOptions;
     if(dataOptions == undefined){
@@ -119,9 +118,9 @@ export default class MaliciousBallPageListTable extends Vue {
     if(dataOptions.sortBy.length > 0){
       pageable.setSort(dataOptions.sortBy[0],dataOptions.sortDesc[0]);
     }
-    const pageWrap = await this._maliciousBallUseCaseInputPort
+    const pageWrap = await this.maliciousProfileUseCaseInputPort
         .getPage(this.maliciousPageListTableStatus.searchType,pageable);
-    this.maliciousBallResDtos = pageWrap.content;
+    this.maliciousProfilePageItemResDto = pageWrap.content;
     this.maliciousPageListTableStatus.serverItemsLength = pageWrap.totalElements;
     if(this.maliciousPageListTableStatus.searchType == MaliciousSearchType.BEFORE_JUDGMENT){
       this.maliciousPageListTableStatus.beforeJudgementCount = pageWrap.totalElements;
@@ -133,11 +132,9 @@ export default class MaliciousBallPageListTable extends Vue {
     return  this.maliciousPageListTableStatus.serverItemsLength;
   }
 
-
-  getDetailPageLink(item: MaliciousBallResDto) {
+  getDetailPageLink(item: MaliciousProfilePageItemResDto) {
     return `Detail?idx=${item.idx}`
   }
-
 }
 </script>
 

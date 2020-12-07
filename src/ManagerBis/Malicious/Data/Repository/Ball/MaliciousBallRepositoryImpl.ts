@@ -1,6 +1,6 @@
 import MaliciousBallRepository from "@/ManagerBis/Malicious/Domain/Repository/Ball/MaliciousBallRepository";
-import MaliciousBallResDto from "@/ManagerBis/Malicious/Dto/MaliciousBallResDto";
-import {MaliciousBallSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousBallSearchType";
+import MaliciousBallResDto from "@/ManagerBis/Malicious/Dto/Ball/MaliciousBallResDto";
+import {MaliciousSearchType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousSearchType";
 import Pageable from "@/ManagerBis/Common/Pageable";
 import PageWrap from "@/ManagerBis/Common/PageWrap";
 import {MaliciousJudgementType} from "@/ManagerBis/Malicious/Domain/Value/MaliciousJudgementType";
@@ -11,7 +11,7 @@ import Preference from "@/Preference";
 @injectable()
 export default class MaliciousBallRepositoryImpl implements MaliciousBallRepository {
 
-    async findByPage(searchType: MaliciousBallSearchType, pageable: Pageable): Promise<PageWrap<MaliciousBallResDto>> {
+    async findByPage(searchType: MaliciousSearchType, pageable: Pageable): Promise<PageWrap<MaliciousBallResDto>> {
         const response = await axios.get<PageWrap<MaliciousBallResDto>>(`${Preference.backEndUrl}/maliciousBall`, {
             params: {
                 "searchType": searchType,

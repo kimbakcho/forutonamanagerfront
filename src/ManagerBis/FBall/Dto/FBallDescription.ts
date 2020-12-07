@@ -3,7 +3,7 @@ export default class FBallDescription{
     desimages!: DesImage[];
     youtubeVideoId!:String
 }
-class DesImage{
+export class DesImage{
     src!:String;
     index!:Number;
 }

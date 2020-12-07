@@ -1,4 +1,4 @@
-export enum MaliciousBallSearchType {
+export enum MaliciousSearchType {
     BEFORE_JUDGMENT="BEFORE_JUDGMENT"
     ,MALICIOUS_CONTENT = "MALICIOUS_CONTENT"
     ,FALSE_REPORT = "FALSE_REPORT"

@@ -4,7 +4,7 @@
       Ball 컨텐츠 신고관리
     </div>
     <div>
-      <MaliciousBallPageListTable>
+      <MaliciousBallPageListTable >
 
       </MaliciousBallPageListTable>
     </div>

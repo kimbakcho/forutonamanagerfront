@@ -4,7 +4,7 @@ import FBallRepository from "@/ManagerBis/FBall/Domain/Repository/FBallRepositor
 import TYPES from "@/ManagerBis/ManagerBisTypes";
 
 export default interface FBallUseCaseInputPort {
-    getFBall(ballUuid: string): Promise<FBallResDto>;
+    getFBall(ballUuid: String): Promise<FBallResDto>;
 }
 @injectable()
 export class FBallUseCase implements FBallUseCaseInputPort{

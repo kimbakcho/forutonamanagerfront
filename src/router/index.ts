@@ -12,6 +12,10 @@ import EventManagementDocument from "@/components/EventManagement/EventManagemen
 import MaliciousBallView from "@/views/MaliciousBallView.vue";
 import MaliciousBallPage from "@/components/MaliciousBall/MaliciousBallPage.vue";
 import MaliciousBallDetailPage from "@/components/MaliciousBall/MaliciousBallDetailPage/MaliciousBallDetailPage.vue";
+import MaliciousProfileView from "@/views/MaliciousProfileView.vue";
+import MaliciousProfilePage from "@/components/MaliciousProfile/MaliciousProfilePage.vue";
+import MaliciousProfileDetailPage
+    from "@/components/MaliciousProfile/MaliciousProfileDetailPage/MaliciousProfileDetailPage.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -84,6 +88,27 @@ const routes: Array<RouteConfig> = [
                 })
             }
         ]
+    },
+    {
+        path:"/MaliciousProfile",
+        name:"MaliciousProfileView",
+        component: MaliciousProfileView,
+        children:[
+            {
+                path: "Page",
+                name: "MaliciousProfilePage1",
+                component: MaliciousProfilePage
+            },
+            {
+                path: "Detail",
+                name: "MaliciousProfileDetailPage",
+                component: MaliciousProfileDetailPage,
+                props: (router)=>({
+                    "idx":Number(router.query.idx)
+                })
+            }
+        ]
+
     },
     {
         path: "/TermsConditionView/:termsIdx",

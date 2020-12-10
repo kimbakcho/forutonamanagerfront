@@ -7,7 +7,6 @@
       <MaliciousProfilePageListTable>
 
       </MaliciousProfilePageListTable>
-
     </div>
   </div>
 </template>

@@ -16,6 +16,10 @@ import MaliciousProfileView from "@/views/MaliciousProfileView.vue";
 import MaliciousProfilePage from "@/components/MaliciousProfile/MaliciousProfilePage.vue";
 import MaliciousProfileDetailPage
     from "@/components/MaliciousProfile/MaliciousProfileDetailPage/MaliciousProfileDetailPage.vue";
+import MaliciousReplyView from "@/views/MaliciousReplyView.vue";
+import MaliciousReplyPage from "@/components/MaliciousReply/MaliciousReplyPage.vue";
+import MaliciousReplyDetailPage
+    from "@/components/MaliciousReply/MaliciousReplyDetailPage/MaliciousReplyDetailPage.vue";
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -108,7 +112,26 @@ const routes: Array<RouteConfig> = [
                 })
             }
         ]
-
+    },
+    {
+        path: "/MaliciousReply",
+        name: "MaliciousReplyView",
+        component: MaliciousReplyView,
+        children:[
+            {
+                path: "Page",
+                name: "MaliciousReplyPage1",
+                component: MaliciousReplyPage
+            },
+            {
+                path: "Detail",
+                name: "MaliciousReplyDetailPage",
+                component: MaliciousReplyDetailPage,
+                props: (router)=>({
+                    "idx":Number(router.query.idx)
+                })
+            }
+        ]
     },
     {
         path: "/TermsConditionView/:termsIdx",

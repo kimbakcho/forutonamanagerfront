@@ -43,7 +43,9 @@
           <v-list-item link to="/MaliciousProfile/Page">
             <v-list-item-title v-text="'Profile 신고 관리'"></v-list-item-title>
           </v-list-item>
-
+          <v-list-item link to="/MaliciousReply/Page">
+            <v-list-item-title v-text="'Reply 신고 관리'"></v-list-item-title>
+          </v-list-item>
 
         </v-list-group>
         <v-list-group

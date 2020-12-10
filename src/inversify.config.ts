@@ -49,6 +49,14 @@ import MaliciousPageListTableStatus from "@/components/Malicious/Table/Malicious
 import FUserInfoRepository from "@/ManagerBis/FUserInfo/Domain/Repository/FUserInfoRepository";
 import FUserInfoRepositoryImpl from "@/ManagerBis/FUserInfo/Data/Repository/FUserInfoRepositoryImpl";
 import FUserInfoUseCaseInputPort, {FUserInfoUseCase} from "@/ManagerBis/FUserInfo/Domain/UseCase/FUserInfoUseCaseInputPort";
+import MaliciousReplyRepository from "@/ManagerBis/Malicious/Domain/Repository/Reply/MaliciousReplyRepository";
+import MaliciousReplyRepositoryImpl from "@/ManagerBis/Malicious/Data/Repository/Reply/MaliciousReplyRepositoryImpl";
+import MaliciousReplyUseCaseInputPort, {MaliciousReplyUseCase} from "@/ManagerBis/Malicious/Domain/UseCase/Reply/MaliciousReplyUseCaseInputPort";
+import MaliciousReplyJudgementUseCaseFactory
+    from "@/ManagerBis/Malicious/Domain/UseCase/Reply/MaliciousReplyJudgementUseCaseFactory";
+import FBallReplyRepository from "@/ManagerBis/FBallReply/Domain/Repository/FBallReplyRepository";
+import FBallReplyRepositoryImpl from "@/ManagerBis/FBallReply/Data/Repository/FBallReplyRepositoryImpl";
+import FBallReplyUseCaseInputPort, {FBallReplyUseCase} from "@/ManagerBis/FBallReply/Domain/UseCase/FBallReplyUseCaseInputPort";
 
 
 const myContainer = new Container();
@@ -79,4 +87,10 @@ myContainer.bind<MaliciousProfileJudgementUseCaseFactory>(TYPES.MaliciousProfile
 myContainer.bind<MaliciousPageListTableStatus>(TYPES.MaliciousProfilePageListTableStatue).to(MaliciousPageListTableStatus).inSingletonScope();
 myContainer.bind<FUserInfoRepository>(TYPES.FUserInfoRepository).to(FUserInfoRepositoryImpl).inSingletonScope();
 myContainer.bind<FUserInfoUseCaseInputPort>(TYPES.FUserInfoUseCaseInputPort).to(FUserInfoUseCase).inSingletonScope();
+myContainer.bind<MaliciousReplyRepository>(TYPES.MaliciousReplyRepository).to(MaliciousReplyRepositoryImpl).inSingletonScope();
+myContainer.bind<MaliciousReplyUseCaseInputPort>(TYPES.MaliciousReplyUseCaseInputPort).to(MaliciousReplyUseCase).inSingletonScope();
+myContainer.bind<MaliciousReplyJudgementUseCaseFactory>(TYPES.MaliciousReplyJudgementUseCaseFactory).to(MaliciousReplyJudgementUseCaseFactory).inSingletonScope();
+myContainer.bind<MaliciousPageListTableStatus>(TYPES.MaliciousReplyPageListTableStatus).to(MaliciousPageListTableStatus).inSingletonScope();
+myContainer.bind<FBallReplyRepository>(TYPES.FBallReplyRepository).to(FBallReplyRepositoryImpl).inSingletonScope();
+myContainer.bind<FBallReplyUseCaseInputPort>(TYPES.FBallReplyUseCaseInputPort).to(FBallReplyUseCase).inSingletonScope();
 export default myContainer;

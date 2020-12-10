@@ -24,6 +24,12 @@ const TYPES = {
     MaliciousProfileJudgementUseCaseFactory: Symbol.for("MaliciousProfileJudgementUseCaseFactory"),
     MaliciousProfilePageListTableStatue: Symbol.for("MaliciousProfilePageListTableStatue"),
     FUserInfoRepository: Symbol.for("FUserInfoRepository"),
-    FUserInfoUseCaseInputPort: Symbol.for("FUserInfoUseCaseInputPort")
+    FUserInfoUseCaseInputPort: Symbol.for("FUserInfoUseCaseInputPort"),
+    MaliciousReplyRepository: Symbol.for("MaliciousReplyRepository"),
+    MaliciousReplyUseCaseInputPort: Symbol.for("MaliciousReplyUseCaseInputPort"),
+    MaliciousReplyJudgementUseCaseFactory: Symbol.for("MaliciousReplyJudgementUseCaseFactory"),
+    MaliciousReplyPageListTableStatus: Symbol.for("MaliciousReplyPageListTableStatus"),
+    FBallReplyRepository: Symbol.for("FBallReplyRepository"),
+    FBallReplyUseCaseInputPort: Symbol.for("FBallReplyUseCaseInputPort")
 }
 export default TYPES;
